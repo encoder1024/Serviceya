@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private LinearLayout fabContainer;
-    private FloatingActionButton fab, fab1, fab2, fab3;
+    private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5, fab6, fab7, fab8;
     private boolean fabMenuOpen = false;
 
     @Override
@@ -50,6 +50,12 @@ public class MainActivity extends AppCompatActivity
         fab1 = (FloatingActionButton) findViewById(R.id.fab_1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab_2);
         fab3 = (FloatingActionButton) findViewById(R.id.fab_3);
+        fab4 = (FloatingActionButton) findViewById(R.id.fab_4);
+        fab5 = (FloatingActionButton) findViewById(R.id.fab_5);
+        fab6 = (FloatingActionButton) findViewById(R.id.fab_6);
+        fab7 = (FloatingActionButton) findViewById(R.id.fab_7);
+        fab8 = (FloatingActionButton) findViewById(R.id.fab_8);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -73,10 +79,19 @@ public class MainActivity extends AppCompatActivity
         Animation hide_fab_2 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab2_hide);
         Animation show_fab_3 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab3_show);
         Animation hide_fab_3 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab3_hide);
+        Animation show_fab_4 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab4_show);
+        Animation hide_fab_4 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab4_hide);
+        Animation show_fab_5 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab5_show);
+        Animation hide_fab_5 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab5_hide);
+        Animation show_fab_6 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab6_show);
+        Animation hide_fab_6 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab6_hide);
+        Animation show_fab_7 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab7_show);
+        Animation hide_fab_7 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab7_hide);
+        Animation show_fab_8 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab8_show);
+        Animation hide_fab_8 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab8_hide);
+
 
         if (!fabMenuOpen) {
-
-
             int centerX = fabContainer.getWidth() / 2;
             int centerY = fabContainer.getHeight() / 2;
             int startRadius = 0;
@@ -115,23 +130,54 @@ public class MainActivity extends AppCompatActivity
 
 
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab1.getLayoutParams();
-            layoutParams.rightMargin += (int) (fab1.getWidth() * 1.7);
-            layoutParams.bottomMargin += (int) (fab1.getHeight() * 0.25);
+            layoutParams.rightMargin += (int) (fab1.getWidth() * 1.3);
+            layoutParams.bottomMargin += (int) (fab1.getHeight() * 0);
             fab1.setLayoutParams(layoutParams);
             fab1.startAnimation(show_fab_1);
             fab1.setClickable(true);
             layoutParams = (FrameLayout.LayoutParams) fab2.getLayoutParams();
-            layoutParams.rightMargin += (int) (fab2.getWidth() * 1.5);
-            layoutParams.bottomMargin += (int) (fab2.getHeight() * 1.5);
+            layoutParams.rightMargin += (int) (fab2.getWidth() * 1.1);
+            layoutParams.bottomMargin += (int) (fab2.getHeight() * 1.1);
             fab2.setLayoutParams(layoutParams);
             fab2.startAnimation(show_fab_2);
             fab2.setClickable(true);
             layoutParams = (FrameLayout.LayoutParams) fab3.getLayoutParams();
-            layoutParams.rightMargin += (int) (fab3.getWidth() * 0.25);
-            layoutParams.bottomMargin += (int) (fab3.getHeight() * 1.7);
+            layoutParams.rightMargin += (int) (fab3.getWidth() * 0);
+            layoutParams.bottomMargin += (int) (fab3.getHeight() * 1.3);
             fab3.setLayoutParams(layoutParams);
             fab3.startAnimation(show_fab_3);
             fab3.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab4.getLayoutParams();
+            layoutParams.rightMargin -= (int) (fab4.getWidth() * 1.1);
+            layoutParams.bottomMargin += (int) (fab4.getHeight() * 1.1);
+            fab4.setLayoutParams(layoutParams);
+            fab4.startAnimation(show_fab_4);
+            fab4.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab5.getLayoutParams();
+            layoutParams.rightMargin -= (int) (fab5.getWidth() * 1.3);
+            layoutParams.bottomMargin -= (int) (fab5.getHeight() * 0);
+            fab5.setLayoutParams(layoutParams);
+            fab5.startAnimation(show_fab_5);
+            fab5.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab6.getLayoutParams();
+            layoutParams.rightMargin -= (int) (fab6.getWidth() * 1.1);
+            layoutParams.bottomMargin -= (int) (fab6.getHeight() * 1.1);
+            fab6.setLayoutParams(layoutParams);
+            fab6.startAnimation(show_fab_6);
+            fab6.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab7.getLayoutParams();
+            layoutParams.rightMargin -= (int) (fab7.getWidth() * 0);
+            layoutParams.bottomMargin -= (int) (fab7.getHeight() * 1.3);
+            fab7.setLayoutParams(layoutParams);
+            fab7.startAnimation(show_fab_7);
+            fab7.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab8.getLayoutParams();
+            layoutParams.rightMargin += (int) (fab8.getWidth() * 1.1);
+            layoutParams.bottomMargin -= (int) (fab8.getHeight() * 1.1);
+            fab8.setLayoutParams(layoutParams);
+            fab8.startAnimation(show_fab_8);
+            fab8.setClickable(true);
+
         } else {
             fab.setImageResource(R.drawable.ic_add);
             int centerX = fabContainer.getWidth() / 2;
@@ -168,23 +214,53 @@ public class MainActivity extends AppCompatActivity
             });
             animator.start();
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab1.getLayoutParams();
-            layoutParams.rightMargin -= (int) (fab1.getWidth() * 1.7);
-            layoutParams.bottomMargin -= (int) (fab1.getHeight() * 0.25);
+            layoutParams.rightMargin -= (int) (fab1.getWidth() * 1.3);
+            layoutParams.bottomMargin -= (int) (fab1.getHeight() * 0);
             fab1.setLayoutParams(layoutParams);
             fab1.startAnimation(hide_fab_1);
             fab1.setClickable(false);
             layoutParams = (FrameLayout.LayoutParams) fab2.getLayoutParams();
-            layoutParams.rightMargin -= (int) (fab2.getWidth() * 1.5);
-            layoutParams.bottomMargin -= (int) (fab2.getHeight() * 1.5);
+            layoutParams.rightMargin -= (int) (fab2.getWidth() * 1.1);
+            layoutParams.bottomMargin -= (int) (fab2.getHeight() * 1.1);
             fab2.setLayoutParams(layoutParams);
             fab2.startAnimation(hide_fab_2);
             fab2.setClickable(false);
             layoutParams = (FrameLayout.LayoutParams) fab3.getLayoutParams();
-            layoutParams.rightMargin -= (int) (fab3.getWidth() * 0.25);
-            layoutParams.bottomMargin -= (int) (fab3.getHeight() * 1.7);
+            layoutParams.rightMargin -= (int) (fab3.getWidth() * 0);
+            layoutParams.bottomMargin -= (int) (fab3.getHeight() * 1.3);
             fab3.setLayoutParams(layoutParams);
             fab3.startAnimation(hide_fab_3);
             fab3.setClickable(false);
+            layoutParams = (FrameLayout.LayoutParams) fab4.getLayoutParams();
+            layoutParams.rightMargin += (int) (fab4.getWidth() * 1.1);
+            layoutParams.bottomMargin -= (int) (fab4.getHeight() * 1.1);
+            fab4.setLayoutParams(layoutParams);
+            fab4.startAnimation(hide_fab_4);
+            fab4.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab5.getLayoutParams();
+            layoutParams.rightMargin += (int) (fab5.getWidth() * 1.3);
+            layoutParams.bottomMargin += (int) (fab5.getHeight() * 0);
+            fab5.setLayoutParams(layoutParams);
+            fab5.startAnimation(hide_fab_5);
+            fab5.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab6.getLayoutParams();
+            layoutParams.rightMargin += (int) (fab6.getWidth() * 1.1);
+            layoutParams.bottomMargin += (int) (fab6.getHeight() * 1.1);
+            fab6.setLayoutParams(layoutParams);
+            fab6.startAnimation(hide_fab_6);
+            fab6.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab7.getLayoutParams();
+            layoutParams.rightMargin += (int) (fab7.getWidth() * 0);
+            layoutParams.bottomMargin += (int) (fab7.getHeight() * 1.3);
+            fab7.setLayoutParams(layoutParams);
+            fab7.startAnimation(hide_fab_7);
+            fab7.setClickable(true);
+            layoutParams = (FrameLayout.LayoutParams) fab8.getLayoutParams();
+            layoutParams.rightMargin -= (int) (fab8.getWidth() * 1.1);
+            layoutParams.bottomMargin += (int) (fab8.getHeight() * 1.1);
+            fab8.setLayoutParams(layoutParams);
+            fab8.startAnimation(hide_fab_8);
+            fab8.setClickable(true);
         }
         fabMenuOpen = !fabMenuOpen;
     }
