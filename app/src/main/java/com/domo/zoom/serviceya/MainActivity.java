@@ -75,24 +75,45 @@ public class MainActivity extends AppCompatActivity
         Animation hide_fab_3 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab3_hide);
 
         if (!fabMenuOpen) {
-            fabContainer.setVisibility(View.VISIBLE);
-            fab.setImageResource(R.drawable.ic_close);
+
+
             int centerX = fabContainer.getWidth() / 2;
             int centerY = fabContainer.getHeight() / 2;
             int startRadius = 0;
             int endRadius = (int) Math.hypot(fabContainer.getWidth(), fabContainer.getHeight()) / 2;
 
 
-            ViewAnimationUtils
+            Animator animator =ViewAnimationUtils
                     .createCircularReveal(
                             fabContainer,
                             centerX,
                             centerY,
                             startRadius,
                             endRadius
-                    )
-                    .setDuration(1000)
-                    .start();
+                    );
+                    animator.setDuration(1000);
+                    animator.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            fabContainer.setVisibility(View.VISIBLE);
+                            fab.setImageResource(R.drawable.ic_close);
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+                        }
+                    });
+                    animator.start();
+
+
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) fab1.getLayoutParams();
             layoutParams.rightMargin += (int) (fab1.getWidth() * 1.7);
             layoutParams.bottomMargin += (int) (fab1.getHeight() * 0.25);

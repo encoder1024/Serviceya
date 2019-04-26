@@ -13,7 +13,7 @@
         android:src="@android:drawable/ic_menu_compass"
         android:visibility="invisible"
         app:backgroundTint="@color/colorFAB"
-        app:fabSize="mini" />
+        app:fabSize="normal" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_2"
@@ -24,7 +24,7 @@
         android:src="@android:drawable/ic_menu_myplaces"
         android:visibility="invisible"
         app:backgroundTint="@color/colorFAB"
-        app:fabSize="mini" />
+        app:fabSize="normal" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_3"
@@ -35,5 +35,5 @@
         android:src="@android:drawable/ic_menu_share"
         android:visibility="invisible"
         app:backgroundTint="@color/colorFAB"
-        app:fabSize="mini" />
+        app:fabSize="normal" />
 </FrameLayout>
