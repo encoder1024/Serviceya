@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout fabContainer;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5, fab6, fab7, fab8;
     private boolean fabMenuOpen = false;
+    private boolean toolbarOpen = false;
     private Toolbar myToolbar;
 
     @Override
@@ -65,10 +66,35 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        //TODO: probar definir el fab como si fuera la toolbar en la definicion de arriba.
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        fab7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleToolbar();
+            }
+        });
 
+
+    }
+
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void toggleToolbar() {
+        if (!toolbarOpen) {
+//            myToolbar.setVisibility(View.VISIBLE);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.openDrawer(GravityCompat.START);
+        } else {
+//            myToolbar.setVisibility(View.GONE);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        toolbarOpen = !toolbarOpen;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -118,7 +144,7 @@ public class MainActivity extends AppCompatActivity
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            myToolbar.setVisibility(View.VISIBLE);
+//                            myToolbar.setVisibility(View.VISIBLE);
                         }
 
                         @Override
@@ -279,6 +305,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            toolbarOpen = false;
         } else {
             super.onBackPressed();
         }
