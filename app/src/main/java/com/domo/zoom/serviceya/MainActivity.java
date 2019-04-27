@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout fabContainer;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5, fab6, fab7, fab8;
     private boolean fabMenuOpen = false;
+    private Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         fabContainer = (LinearLayout) findViewById(R.id.fabContainerLayout);
+        myToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            myToolbar.setVisibility(View.VISIBLE);
                         }
 
                         @Override
@@ -178,6 +181,7 @@ public class MainActivity extends AppCompatActivity
             fab8.startAnimation(show_fab_8);
             fab8.setClickable(true);
 
+
         } else {
             fab.setImageResource(R.drawable.ic_add);
             int centerX = fabContainer.getWidth() / 2;
@@ -197,11 +201,13 @@ public class MainActivity extends AppCompatActivity
             animator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
+                    myToolbar.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     fabContainer.setVisibility(View.GONE);
+
                 }
 
                 @Override
