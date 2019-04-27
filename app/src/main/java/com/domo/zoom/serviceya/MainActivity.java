@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity
             fab8.startAnimation(hide_fab_8);
             fab8.setClickable(true);
 
-            //TODO: colocar un boton en el menú que muestre la Toolbar.
+            //TODO: colocar un boton en el menú que muestre la Toolbar.5
         }
         fabMenuOpen = !fabMenuOpen;
     }
