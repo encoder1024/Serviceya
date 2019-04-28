@@ -10,10 +10,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_compass"
+        android:src="@drawable/aguatres"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
+
+    <TextView
+        android:id="@+id/tv_fab_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:visibility="invisible"
+        android:text="Agua"
+        android:textColor="#fff" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_2"
@@ -21,10 +31,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_myplaces"
+        android:src="@android:drawable/ic_lock_idle_low_battery"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
+
+    <TextView
+        android:id="@+id/tv_fab_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:visibility="invisible"
+        android:text="Energía"
+        android:textColor="#fff" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_3"
@@ -32,10 +52,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_share"
+        android:src="@drawable/tem_white"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
+
+    <TextView
+        android:id="@+id/tv_fab_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:visibility="invisible"
+        android:text="Temperatura"
+        android:textColor="#fff" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_4"
@@ -43,10 +73,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_compass"
+        android:src="@android:drawable/ic_dialog_dialer"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
+
+    <TextView
+        android:id="@+id/tv_fab_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:visibility="invisible"
+        android:text="Suelos"
+        android:textColor="#fff" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_5"
@@ -54,10 +94,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_myplaces"
+        android:src="@drawable/aire"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
+
+    <TextView
+        android:id="@+id/tv_fab_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:visibility="invisible"
+        android:text="Aire"
+        android:textColor="#fff" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_6"
@@ -65,10 +115,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_share"
+        android:src="@drawable/estructuras"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
+
+    <TextView
+        android:id="@+id/tv_fab_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:visibility="invisible"
+        android:text="Estructuras"
+        android:textColor="#fff" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_7"
@@ -87,8 +147,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_menu_share"
+        android:src="@drawable/tecno"
         android:visibility="invisible"
-        app:backgroundTint="@color/colorFAB"
+        app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal" />
+
+    <TextView
+        android:id="@+id/tv_fab_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="8dp"
+        android:visibility="invisible"
+        android:text="Tecnología"
+        android:textColor="#fff" />
 </FrameLayout>
