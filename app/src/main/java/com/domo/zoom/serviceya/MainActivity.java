@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity
     private boolean fabMenuOpen = false;
     private boolean toolbarOpen = false;
     private Toolbar myToolbar;
+    private boolean fab7Touch = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +51,30 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        fab1 = (FloatingActionButton) findViewById(R.id.fab_1);
-        fab2 = (FloatingActionButton) findViewById(R.id.fab_2);
-        fab3 = (FloatingActionButton) findViewById(R.id.fab_3);
-        fab4 = (FloatingActionButton) findViewById(R.id.fab_4);
-        fab5 = (FloatingActionButton) findViewById(R.id.fab_5);
-        fab6 = (FloatingActionButton) findViewById(R.id.fab_6);
-        fab7 = (FloatingActionButton) findViewById(R.id.fab_7);
-        fab8 = (FloatingActionButton) findViewById(R.id.fab_8);
+        fab1 = findViewById(R.id.fab_1);
+        fab2 = findViewById(R.id.fab_2);
+        fab3 = findViewById(R.id.fab_3);
+        fab4 = findViewById(R.id.fab_4);
+        fab5 = findViewById(R.id.fab_5);
+        fab6 = findViewById(R.id.fab_6);
+        fab7 = findViewById(R.id.fab_7);
+        fab8 = findViewById(R.id.fab_8);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                if (newState == DrawerLayout.STATE_SETTLING) {
+                    if (!fab7Touch) {
+                        toolbarOpen = !toolbarOpen;
+                    } else {
+                        fab7Touch = false;
+                    }
+                }
+            }
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -74,6 +86,7 @@ public class MainActivity extends AppCompatActivity
         fab7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fab7Touch = true;
                 toggleToolbar();
             }
         });
@@ -95,6 +108,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         toolbarOpen = !toolbarOpen;
+
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
