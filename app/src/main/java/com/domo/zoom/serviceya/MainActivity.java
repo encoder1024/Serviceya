@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity
 
     private LinearLayout fabContainer;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5, fab6, fab7, fab8;
-    private TextView tvFab1, tvFab2, tvFab3, tvFab4, tvFab5, tvFab6, tvFab7, tvFab8;
+    private TextView tvFab1, tvFab2, tvFab3, tvFab4, tvFab5, tvFab6, tvFab8;
     private boolean fabMenuOpen = false;
     private boolean toolbarOpen = false;
     private Toolbar myToolbar;
