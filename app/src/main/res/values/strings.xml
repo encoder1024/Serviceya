@@ -6,4 +6,8 @@
     <string name="nav_header_subtitle">hola@prontoservice.com.ar</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Opciones</string>
+    <string name="imagen_del_prestador">imagen del prestador</string>
+    <string name="prestador_nombre">Nombre del Prestador</string>
+    <string name="prestador_calificacion">Calificación</string>
+    <string name="prestador_comentario">Comentario</string>
 </resources>
