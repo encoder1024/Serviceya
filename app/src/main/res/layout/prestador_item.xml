@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contenedor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
     android:layout_margin="5dp"
     android:background="#A9E351"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     tools:layout_editor_absoluteX="5dp"
     tools:layout_editor_absoluteY="5dp">
@@ -20,7 +22,7 @@
     <RelativeLayout
         android:id="@+id/textos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="false"
         android:layout_toEndOf="@id/imageView2"
         android:gravity="center_vertical"
