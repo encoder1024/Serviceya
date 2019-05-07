@@ -1,6 +1,7 @@
 package com.domo.zoom.serviceya;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 
@@ -29,6 +31,7 @@ public class Categoria extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PrestadorAdapter mAdapter;
     private Spinner spCategoria;
+    private ArrayList<String> categorias = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,20 @@ public class Categoria extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //get the current intent
+        Intent intent = getIntent();
+        //get the attached extras from the intent
+        //we should use the same key as we used to attach the data.
+        String grupo_name = intent.getStringExtra("GRUPO_NAME");
+
+        categorias = buscarCategorias(grupo_name);
+
         spCategoria = findViewById(R.id.sp_categorias);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, categorias);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategoria.setAdapter(dataAdapter);
+
 
         recyclerView = findViewById(R.id.rv_prestadores);
 

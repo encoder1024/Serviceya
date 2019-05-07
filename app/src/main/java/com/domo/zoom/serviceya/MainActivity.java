@@ -2,6 +2,7 @@ package com.domo.zoom.serviceya;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -90,8 +91,6 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        //TODO: probar definir el fab como si fuera la toolbar en la definicion de arriba.
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -99,8 +98,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 //TODO: es solo una clase de prueba, la tengo que sacar.
-                ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
+                //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
                 //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //creating and initializing an Intent object
+                Intent intent = new Intent(getBaseContext(), Categoria.class);
+                //attach the key value pair using putExtra to this intent
+                String user_name = "AGUA";
+                intent.putExtra("GRUPO_NAME", user_name);
+                //starting the activity
+                startActivity(intent);
             }
         });
 
