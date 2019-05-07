@@ -2,6 +2,8 @@ package com.domo.zoom.serviceya;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -96,7 +98,9 @@ public class MainActivity extends AppCompatActivity
         fab1.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-
+                //TODO: es solo una clase de prueba, la tengo que sacar.
+                ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
+                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
             }
         });
 
