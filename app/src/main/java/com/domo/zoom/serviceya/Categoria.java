@@ -1,16 +1,25 @@
 package com.domo.zoom.serviceya;
 
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Spinner;
 
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +28,19 @@ public class Categoria extends AppCompatActivity {
     private List<ItemPrestador> presList = new ArrayList<>();
     private RecyclerView recyclerView;
     private PrestadorAdapter mAdapter;
+    private Spinner spCategoria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO: tomar el valor del botón del menú con el grupo elegido para poder buscar las categorias en la base y cargarlos en el spinner.
         setContentView(R.layout.activity_categoria);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recyclerView = (RecyclerView) findViewById(R.id.rv_prestadores);
+        spCategoria = findViewById(R.id.sp_categorias);
+
+        recyclerView = findViewById(R.id.rv_prestadores);
 
         mAdapter = new PrestadorAdapter(presList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -98,4 +111,62 @@ public class Categoria extends AppCompatActivity {
 
         mAdapter.notifyDataSetChanged();
     }
+
+    private void updateFoto(String fotoNombre) {
+        String URL = Api.ROOT_URL_IMAGES+fotoNombre;
+        CargaImagenes nuevaTarea = new CargaImagenes();
+        nuevaTarea.execute(URL);
+    }
+
+    private class CargaImagenes extends AsyncTask<String, Void, Bitmap> {
+
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+
+            pDialog = new ProgressDialog(Categoria.this);
+            pDialog.setMessage("Cargando Imagen");
+            pDialog.setCancelable(true);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.show();
+
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            Log.i("doInBackground" , "Entra en doInBackground");
+            String url = params[0];
+            return descargarImagen(url);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+
+            myLogo.setImageBitmap(result);
+            pDialog.dismiss();
+        }
+
+    }
+
+    private Bitmap descargarImagen (String imageHttpAddress){
+        URL imageUrl = null;
+        Bitmap imagen = null;
+        try{
+            imageUrl = new URL(imageHttpAddress);
+            HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
+            conn.connect();
+            imagen = BitmapFactory.decodeStream(conn.getInputStream());
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+
+        return imagen;
+    }
+
 }
