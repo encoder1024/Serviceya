@@ -15,14 +15,20 @@ import android.view.View;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Categoria extends AppCompatActivity {
@@ -47,15 +53,6 @@ public class Categoria extends AppCompatActivity {
         //we should use the same key as we used to attach the data.
         String grupo_name = intent.getStringExtra("GRUPO_NAME");
 
-        categorias = buscarCategorias(grupo_name);
-
-        spCategoria = findViewById(R.id.sp_categorias);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, categorias);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategoria.setAdapter(dataAdapter);
-
-
         recyclerView = findViewById(R.id.rv_prestadores);
 
         mAdapter = new PrestadorAdapter(presList);
@@ -64,7 +61,29 @@ public class Categoria extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        prepareMovieData();
+        categorias = buscarCategorias(grupo_name);
+
+        spCategoria = findViewById(R.id.sp_categorias);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, categorias);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategoria.setAdapter(dataAdapter);
+
+        spCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +95,7 @@ public class Categoria extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    private void prepareMovieData() {
+    private void actualizarPrestadores(String categoriaName) {
         ItemPrestador item = new ItemPrestador("Mad Max: Fury Road", "Action & Adventure", "2015", "Viva la vida.");
         presList.add(item);
 
@@ -127,6 +146,106 @@ public class Categoria extends AppCompatActivity {
 
         mAdapter.notifyDataSetChanged();
     }
+
+    private ArrayList<String> buscarCategorias(String grupoName) {
+        ArrayList<String> result = new ArrayList<>();
+        //TODO
+        PerformNetworkRequest request = new PerformNetworkRequest(
+                Api.URL_READ_SITIOS_ESPECIAL + grupoName, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                null,
+                Constants.CODE_GET_REQUEST);
+        request.execute();
+        return result;
+    }
+
+    //inner class to perform network request extending an AsyncTask
+    private class PerformNetworkRequest extends AsyncTask<Void, Void, String> {
+
+        //the url where we need to send the request
+        String url;
+
+        //the parameters
+        HashMap<String, String> params;
+
+        //the request code to define whether it is a GET or POST
+        int requestCode;
+
+        //constructor to initialize values
+        PerformNetworkRequest(String url, HashMap<String, String> params, int requestCode) {
+            this.url = url;
+            this.params = params;
+            this.requestCode = requestCode;
+        }
+
+        //when the task started displaying a progressbar
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //progressBar.setVisibility(View.VISIBLE);
+        }
+
+
+
+
+        //the network operation will be performed in background
+        @Override
+        protected String doInBackground(Void... voids) {
+            RequestHandler requestHandler = new RequestHandler();
+
+            if (requestCode == CODE_POST_REQUEST)
+                return requestHandler.sendPostRequest(url, params);
+
+
+            if (requestCode == CODE_GET_REQUEST)
+                return requestHandler.sendGetRequest(url);
+
+            return null;
+        }
+
+        //this method will give the response from the request
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //progressBar.setVisibility(GONE);
+            String [] urlmix = url.split("=");
+            try {
+                switch (urlmix[0]+"="+urlmix[1]+"="){
+                    case Api.URL_READ_SITIOS_FULL:
+                        JSONObject objectSitio = new JSONObject(s);
+                        if (!objectSitio.getBoolean("error")) {
+                            Toast.makeText(getApplicationContext(), objectSitio.getString("message") + ": sitio!", Toast.LENGTH_SHORT).show();
+                            //refreshing the herolist after every operation
+                            //so we get an updated list
+                            //we will create this method right now it is commented
+                            //because we haven't created it yet
+
+                            refreshSitesList(objectSitio.getJSONArray("sitio"));
+                        }
+                        break;
+                    case Api.URL_READ_SITIOS_ESPECIAL:
+                        JSONObject objectEspecial = new JSONObject(s);
+                        if (!objectEspecial.getBoolean("error")) {
+                            Toast.makeText(getApplicationContext(), objectEspecial.getString("message") + ": espec", Toast.LENGTH_SHORT).show();
+                            //refreshing the herolist after every operation
+                            //so we get an updated list
+                            //we will create this method right now it is commented
+                            //because we haven't created it yet
+
+                            refreshEspecialList(objectEspecial.getJSONArray("especial"));
+                        }
+                        break;
+                    case Api.URL_READ_SITIO_CERTIF:
+                        JSONObject objectUser = new JSONObject(s);
+                        if (!objectUser.getBoolean("error")) {
+                            Toast.makeText(getApplicationContext(), objectUser.getString("message") + ": certificados!", Toast.LENGTH_SHORT).show();
+                            refreshCertifList(objectUser.getJSONArray("certif"));
+                        }
+                        break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
     private void updateFoto(String fotoNombre) {
         String URL = Api.ROOT_URL_IMAGES+fotoNombre;
