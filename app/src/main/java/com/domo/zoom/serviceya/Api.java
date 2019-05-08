@@ -2,7 +2,7 @@ package com.domo.zoom.serviceya;
 
 public class Api {
     private static final String ROOT_URL = "http://www.prontoservice.com.ar/gpsas/v1/Api.php?apicall=";
-    public static final String ROOT_URL_IMAGES = "http://www.prontoservice.com.ar/gpsas/imagenes/";
+    static final String ROOT_URL_IMAGES = "http://www.prontoservice.com.ar/gpsas/imagenes/";
 
     public static final String URL_CREATE_HERO = ROOT_URL + "createhero";
     public static final String URL_READ_HEROES = ROOT_URL + "getheroes";
@@ -15,9 +15,9 @@ public class Api {
     public static final String URL_WRITE_ACT_USER = ROOT_URL + "writeDataUser";
     public static final String URL_WRITE_ADD_USER = ROOT_URL + "writeCreateUser";
     public static final String URL_READ_SITIOS = ROOT_URL + "getsitios";
-    public static final String URL_READ_SITIOS_FULL = ROOT_URL + "getsitiofull&idSitio=";
-    public static final String URL_READ_SITIOS_ESPECIAL = ROOT_URL + "getespecial&idSitio=";
-    public static final String URL_READ_SITIO_CERTIF = ROOT_URL + "getcertif&idSitio=";
+    static final String URL_READ_SITIOS_FULL = ROOT_URL + "getsitiofull&idSitio=";
+    static final String URL_READ_CATEGORIAS = ROOT_URL + "getCategorias&grupoName=";
+    static final String URL_READ_SITIO_CERTIF = ROOT_URL + "getcertif&idSitio=";
     public static final String URL_UPDATE_USER_TOKEN_FB = ROOT_URL + "settokenfb&idUser=";
     public static final String URL_WRITE_ADD_PRO = ROOT_URL + "writeCreatePro";
     public static final String URL_WRITE_ACT_PRO = ROOT_URL + "writeDataPro";

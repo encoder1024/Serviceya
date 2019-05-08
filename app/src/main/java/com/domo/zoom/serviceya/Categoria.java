@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,23 +64,7 @@ public class Categoria extends AppCompatActivity {
 
         categorias = buscarCategorias(grupo_name);
 
-        spCategoria = findViewById(R.id.sp_categorias);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, categorias);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategoria.setAdapter(dataAdapter);
 
-        spCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
 
 
@@ -96,53 +81,53 @@ public class Categoria extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
     private void actualizarPrestadores(String categoriaName) {
-        ItemPrestador item = new ItemPrestador("Mad Max: Fury Road", "Action & Adventure", "2015", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Inside Out", "Animation, Kids & Family", "2015", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Star Wars: Episode VII - The Force Awakens", "Action", "2015", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Shaun the Sheep", "Animation", "2015", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("The Martian", "Science Fiction & Fantasy", "2015", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Mission: Impossible Rogue Nation", "Action", "2015", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Up", "Animation", "2009", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Star Trek", "Science Fiction", "2009", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("The LEGO Movie", "Animation", "2014", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Iron Man", "Action & Adventure", "2008", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Aliens", "Science Fiction", "1986", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Chicken Run", "Animation", "2000", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Back to the Future", "Science Fiction", "1985", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Raiders of the Lost Ark", "Action & Adventure", "1981", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Goldfinger", "Action & Adventure", "1965", "Viva la vida.");
-        presList.add(item);
-
-        item = new ItemPrestador("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014", "Viva la vida.");
-        presList.add(item);
+//        ItemPrestador item = new ItemPrestador("Mad Max: Fury Road", "Action & Adventure", "2015", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Inside Out", "Animation, Kids & Family", "2015", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Star Wars: Episode VII - The Force Awakens", "Action", "2015", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Shaun the Sheep", "Animation", "2015", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("The Martian", "Science Fiction & Fantasy", "2015", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Mission: Impossible Rogue Nation", "Action", "2015", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Up", "Animation", "2009", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Star Trek", "Science Fiction", "2009", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("The LEGO Movie", "Animation", "2014", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Iron Man", "Action & Adventure", "2008", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Aliens", "Science Fiction", "1986", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Chicken Run", "Animation", "2000", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Back to the Future", "Science Fiction", "1985", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Raiders of the Lost Ark", "Action & Adventure", "1981", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Goldfinger", "Action & Adventure", "1965", "Viva la vida.");
+//        presList.add(item);
+//
+//        item = new ItemPrestador("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014", "Viva la vida.");
+//        presList.add(item);
 
         mAdapter.notifyDataSetChanged();
     }
@@ -151,7 +136,7 @@ public class Categoria extends AppCompatActivity {
         ArrayList<String> result = new ArrayList<>();
         //TODO
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_SITIOS_ESPECIAL + grupoName, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_CATEGORIAS + grupoName, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -185,18 +170,16 @@ public class Categoria extends AppCompatActivity {
         }
 
 
-
-
         //the network operation will be performed in background
         @Override
         protected String doInBackground(Void... voids) {
             RequestHandler requestHandler = new RequestHandler();
 
-            if (requestCode == CODE_POST_REQUEST)
+            if (requestCode == Constants.CODE_POST_REQUEST)
                 return requestHandler.sendPostRequest(url, params);
 
 
-            if (requestCode == CODE_GET_REQUEST)
+            if (requestCode == Constants.CODE_GET_REQUEST)
                 return requestHandler.sendGetRequest(url);
 
             return null;
@@ -207,9 +190,9 @@ public class Categoria extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             //progressBar.setVisibility(GONE);
-            String [] urlmix = url.split("=");
+            String[] urlmix = url.split("=");
             try {
-                switch (urlmix[0]+"="+urlmix[1]+"="){
+                switch (urlmix[0] + "=" + urlmix[1] + "=") {
                     case Api.URL_READ_SITIOS_FULL:
                         JSONObject objectSitio = new JSONObject(s);
                         if (!objectSitio.getBoolean("error")) {
@@ -219,26 +202,26 @@ public class Categoria extends AppCompatActivity {
                             //we will create this method right now it is commented
                             //because we haven't created it yet
 
-                            refreshSitesList(objectSitio.getJSONArray("sitio"));
+                            //refreshSitesList(objectSitio.getJSONArray("sitio"));
                         }
                         break;
-                    case Api.URL_READ_SITIOS_ESPECIAL:
+                    case Api.URL_READ_CATEGORIAS:
                         JSONObject objectEspecial = new JSONObject(s);
                         if (!objectEspecial.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectEspecial.getString("message") + ": espec", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), objectEspecial.getString("message") + ": categoria", Toast.LENGTH_SHORT).show();
                             //refreshing the herolist after every operation
                             //so we get an updated list
                             //we will create this method right now it is commented
                             //because we haven't created it yet
 
-                            refreshEspecialList(objectEspecial.getJSONArray("especial"));
+                            refreshCategorias(objectEspecial.getJSONArray("categorias"));
                         }
                         break;
                     case Api.URL_READ_SITIO_CERTIF:
                         JSONObject objectUser = new JSONObject(s);
                         if (!objectUser.getBoolean("error")) {
                             Toast.makeText(getApplicationContext(), objectUser.getString("message") + ": certificados!", Toast.LENGTH_SHORT).show();
-                            refreshCertifList(objectUser.getJSONArray("certif"));
+                            //refreshCertifList(objectUser.getJSONArray("certif"));
                         }
                         break;
                 }
@@ -246,6 +229,35 @@ public class Categoria extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void refreshCategorias(JSONArray categoriasJson) throws JSONException {
+
+        categorias.clear();
+
+        for (int i = 0; i < categoriasJson.length(); i++){
+            JSONObject obj = categoriasJson.getJSONObject(i);
+            categorias.add(obj.get("nombre").toString());
+        }
+
+        spCategoria = findViewById(R.id.sp_categorias);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, categorias);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategoria.setAdapter(dataAdapter);
+
+        spCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
 
     private void updateFoto(String fotoNombre) {
         String URL = Api.ROOT_URL_IMAGES+fotoNombre;
@@ -283,7 +295,7 @@ public class Categoria extends AppCompatActivity {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
 
-            myLogo.setImageBitmap(result);
+            //myLogo.setImageBitmap(result); TODO: actualizar la imagen de cada objeto Prestador.
             pDialog.dismiss();
         }
 

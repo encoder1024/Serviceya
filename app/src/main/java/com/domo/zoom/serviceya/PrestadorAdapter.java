@@ -2,9 +2,9 @@ package com.domo.zoom.serviceya;
 
 
 import android.support.v7.widget.RecyclerView;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +43,7 @@ public class PrestadorAdapter extends RecyclerView.Adapter<PrestadorAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ItemPrestador prestador = presList.get(position);
-        holder.imagen.setImageDrawable(prestador.getImagenItem());
+        //holder.imagen.setImageDrawable(prestador.getImagenItem()); TODO: ver de tomar el archivo de la imagen de cada objeto ItemPrestador
         holder.nombre.setText(prestador.getNombreItem());
         holder.calif.setText(prestador.getCalItem());
         holder.comen.setText(prestador.getComenItem());
