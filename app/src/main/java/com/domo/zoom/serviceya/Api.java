@@ -1,8 +1,8 @@
 package com.domo.zoom.serviceya;
 
 public class Api {
-    private static final String ROOT_URL = "http://www.prontoservice.com.ar/gpsas/v1/Api.php?apicall=";
-    static final String ROOT_URL_IMAGES = "http://www.prontoservice.com.ar/gpsas/imagenes/";
+    private static final String ROOT_URL = "http://www.prontoservice.com.ar/pspia/v1/Api.php?apicall=";
+    static final String ROOT_URL_IMAGES = "http://www.prontoservice.com.ar/pspia/imagenes/";
 
     public static final String URL_CREATE_HERO = ROOT_URL + "createhero";
     public static final String URL_READ_HEROES = ROOT_URL + "getheroes";

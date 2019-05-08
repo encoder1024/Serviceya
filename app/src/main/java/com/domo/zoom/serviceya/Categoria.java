@@ -62,12 +62,7 @@ public class Categoria extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        categorias = buscarCategorias(grupo_name);
-
-
-
-
-
+        buscarCategorias(grupo_name);
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -133,14 +128,14 @@ public class Categoria extends AppCompatActivity {
     }
 
     private ArrayList<String> buscarCategorias(String grupoName) {
-        ArrayList<String> result = new ArrayList<>();
+
         //TODO
         PerformNetworkRequest request = new PerformNetworkRequest(
                 Api.URL_READ_CATEGORIAS + grupoName, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
-        return result;
+
     }
 
     //inner class to perform network request extending an AsyncTask
