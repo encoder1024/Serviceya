@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -48,11 +50,18 @@ public class Categoria extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //get the current intent
         Intent intent = getIntent();
         //get the attached extras from the intent
         //we should use the same key as we used to attach the data.
         String grupo_name = intent.getStringExtra("GRUPO_NAME");
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null){
+            ab.setTitle("Especialidad: " + grupo_name);
+        }
+
 
         recyclerView = findViewById(R.id.rv_prestadores);
 
@@ -127,7 +136,7 @@ public class Categoria extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
-    private ArrayList<String> buscarCategorias(String grupoName) {
+    private void buscarCategorias(String grupoName) {
 
         //TODO
         PerformNetworkRequest request = new PerformNetworkRequest(
@@ -232,7 +241,7 @@ public class Categoria extends AppCompatActivity {
 
         for (int i = 0; i < categoriasJson.length(); i++){
             JSONObject obj = categoriasJson.getJSONObject(i);
-            categorias.add(obj.get("nombre").toString());
+            categorias.add(obj.get("categoria").toString());
         }
 
         spCategoria = findViewById(R.id.sp_categorias);
@@ -244,7 +253,7 @@ public class Categoria extends AppCompatActivity {
         spCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
+                //actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
             }
 
             @Override

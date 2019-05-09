@@ -1,5 +1,7 @@
 package com.domo.zoom.serviceya;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -85,6 +87,7 @@ public class RequestHandler {
                 sb.append(s + "\n");
             }
         } catch (Exception e) {
+            Log.d("Pruebas", e.toString());
         }
         return sb.toString();
     }
