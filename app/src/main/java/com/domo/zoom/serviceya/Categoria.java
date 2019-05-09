@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -254,6 +255,8 @@ public class Categoria extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 //actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                //((TextView) adapterView.getChildAt(0)).setTextSize(5);
             }
 
             @Override
