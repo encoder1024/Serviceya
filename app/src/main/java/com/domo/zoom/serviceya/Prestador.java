@@ -185,23 +185,23 @@ public class Prestador {
 }
 
 class ItemPrestador{
-    private Bitmap imagenItem;
+    private String imagenItem;
     private String nombreItem;
     private String calItem;
     private String comenItem;
 
-    ItemPrestador(Bitmap imagenItem, String nombreItem, String calItem, String comenItem){
+    ItemPrestador(String imagenItem, String nombreItem, String calItem, String comenItem){
         this.imagenItem = imagenItem;
         this.nombreItem = nombreItem;
         this.calItem = calItem;
         this.comenItem = comenItem;
     }
 
-    public Bitmap getImagenItem() {
+    public String getImagenItem() {
         return imagenItem;
     }
 
-    public void setImagenItem(Bitmap imagenItem) {
+    public void setImagenItem(String imagenItem) {
         this.imagenItem = imagenItem;
     }
 

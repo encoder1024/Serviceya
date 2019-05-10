@@ -42,6 +42,8 @@ public class Categoria extends AppCompatActivity {
     private PrestadorAdapter mAdapter;
     private Spinner spCategoria;
     private ArrayList<String> categorias = new ArrayList<>();
+    private ArrayList<Prestador> prestadores = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,13 @@ public class Categoria extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         buscarCategorias(grupo_name);
 
 
@@ -85,56 +94,15 @@ public class Categoria extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    private void actualizarPrestadores(String categoriaName) {
-//        ItemPrestador item = new ItemPrestador("Mad Max: Fury Road", "Action & Adventure", "2015", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Inside Out", "Animation, Kids & Family", "2015", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Star Wars: Episode VII - The Force Awakens", "Action", "2015", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Shaun the Sheep", "Animation", "2015", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("The Martian", "Science Fiction & Fantasy", "2015", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Mission: Impossible Rogue Nation", "Action", "2015", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Up", "Animation", "2009", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Star Trek", "Science Fiction", "2009", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("The LEGO Movie", "Animation", "2014", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Iron Man", "Action & Adventure", "2008", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Aliens", "Science Fiction", "1986", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Chicken Run", "Animation", "2000", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Back to the Future", "Science Fiction", "1985", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Raiders of the Lost Ark", "Action & Adventure", "1981", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Goldfinger", "Action & Adventure", "1965", "Viva la vida.");
-//        presList.add(item);
-//
-//        item = new ItemPrestador("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014", "Viva la vida.");
-//        presList.add(item);
 
-        mAdapter.notifyDataSetChanged();
+    private void actualizarPrestadores(String categoriaName) {
+
+        PerformNetworkRequest request = new PerformNetworkRequest(
+                Api.URL_READ_PRESTADORES + categoriaName, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                null,
+                Constants.CODE_GET_REQUEST);
+        request.execute();
+
     }
 
     private void buscarCategorias(String grupoName) {
@@ -213,7 +181,7 @@ public class Categoria extends AppCompatActivity {
                     case Api.URL_READ_CATEGORIAS:
                         JSONObject objectEspecial = new JSONObject(s);
                         if (!objectEspecial.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectEspecial.getString("message") + ": categoria", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), objectEspecial.getString("message") + ": categoria", Toast.LENGTH_SHORT).show();
                             //refreshing the herolist after every operation
                             //so we get an updated list
                             //we will create this method right now it is commented
@@ -222,11 +190,11 @@ public class Categoria extends AppCompatActivity {
                             refreshCategorias(objectEspecial.getJSONArray("categorias"));
                         }
                         break;
-                    case Api.URL_READ_SITIO_CERTIF:
+                    case Api.URL_READ_PRESTADORES:
                         JSONObject objectUser = new JSONObject(s);
                         if (!objectUser.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectUser.getString("message") + ": certificados!", Toast.LENGTH_SHORT).show();
-                            //refreshCertifList(objectUser.getJSONArray("certif"));
+//                            Toast.makeText(getApplicationContext(), objectUser.getString("message") + ": prestadores!", Toast.LENGTH_SHORT).show();
+                            refreshPresList(objectUser.getJSONArray("prestadores"));
                         }
                         break;
                 }
@@ -234,6 +202,45 @@ public class Categoria extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void refreshPresList(JSONArray prestadoresJson) throws JSONException {
+
+        prestadores.clear();
+        presList.clear();
+
+        for (int i = 0; i < prestadoresJson.length(); i++){
+            JSONObject obj = prestadoresJson.getJSONObject(i);
+            prestadores.add(new Prestador(
+                obj.getInt("id"),
+                obj.getString("nombre"),
+                obj.getString("apellido"),
+                obj.getString("token"),
+                obj.getString("telefono"),
+                obj.getString("celular"),
+                obj.getString("email"),
+                obj.getString("web"),
+                obj.getString("password"),
+                obj.getString("imagen"),
+                obj.getString("direccion"),
+                obj.getInt("habilitado"),
+                obj.getInt("estado"),
+                obj.getString("created_at"),
+                obj.getString("updated_at")
+            ));
+
+            presList.add(new ItemPrestador(
+                    obj.getString("imagen"),
+                    obj.getString("nombre")+" "+obj.getString("apellido"),
+                    "Calificación en proceso...",
+                    "Comentarios en proceso..."
+            ));
+        }
+
+
+
+       mAdapter.notifyDataSetChanged();
+
     }
 
     private void refreshCategorias(JSONArray categoriasJson) throws JSONException {
@@ -254,9 +261,10 @@ public class Categoria extends AppCompatActivity {
         spCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
+
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
+                actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
             }
 
             @Override
@@ -264,63 +272,6 @@ public class Categoria extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void updateFoto(String fotoNombre) {
-        String URL = Api.ROOT_URL_IMAGES+fotoNombre;
-        CargaImagenes nuevaTarea = new CargaImagenes();
-        nuevaTarea.execute(URL);
-    }
-
-    private class CargaImagenes extends AsyncTask<String, Void, Bitmap> {
-
-        ProgressDialog pDialog;
-
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            super.onPreExecute();
-
-            pDialog = new ProgressDialog(Categoria.this);
-            pDialog.setMessage("Cargando Imagen");
-            pDialog.setCancelable(true);
-            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pDialog.show();
-
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            // TODO Auto-generated method stub
-            Log.i("doInBackground" , "Entra en doInBackground");
-            String url = params[0];
-            return descargarImagen(url);
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-
-            //myLogo.setImageBitmap(result); TODO: actualizar la imagen de cada objeto Prestador.
-            pDialog.dismiss();
-        }
-
-    }
-
-    private Bitmap descargarImagen (String imageHttpAddress){
-        URL imageUrl = null;
-        Bitmap imagen = null;
-        try{
-            imageUrl = new URL(imageHttpAddress);
-            HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
-            conn.connect();
-            imagen = BitmapFactory.decodeStream(conn.getInputStream());
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
-
-        return imagen;
     }
 
 }

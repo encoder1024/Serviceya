@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-        import java.util.List;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class PrestadorAdapter extends RecyclerView.Adapter<PrestadorAdapter.MyViewHolder> {
 
@@ -43,6 +45,7 @@ public class PrestadorAdapter extends RecyclerView.Adapter<PrestadorAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ItemPrestador prestador = presList.get(position);
+        Picasso.get().load(Api.ROOT_URL_IMAGES+prestador.getImagenItem()).into(holder.imagen);
         //holder.imagen.setImageDrawable(prestador.getImagenItem()); TODO: ver de tomar el archivo de la imagen de cada objeto ItemPrestador
         holder.nombre.setText(prestador.getNombreItem());
         holder.calif.setText(prestador.getCalItem());
