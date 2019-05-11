@@ -1,6 +1,7 @@
 package com.domo.zoom.serviceya;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,12 +14,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,12 +78,29 @@ public class Categoria extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        recyclerView.setOnClickListener(new View.OnClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
+                recyclerView, new ClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View view, final int position) {
+                //Values are passing to activity & to fragment as well
+                Toast.makeText(Categoria.this, "Single Click on position :"+position,
+                        Toast.LENGTH_SHORT).show();
+                ImageView picture=(ImageView)view.findViewById(R.id.imageView2);
+                picture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(Categoria.this, "Single Click on Image :"+ position,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-        });
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(Categoria.this, "Long press on position :"+position,
+                        Toast.LENGTH_LONG).show();
+            }
+        }));
 
         buscarCategorias(grupo_name);
 
@@ -274,4 +295,70 @@ public class Categoria extends AppCompatActivity {
         });
     }
 
+    /**
+     * RecyclerView: Implementing single item click and long press
+     *
+     * - creating an Interface for single tap and long press
+     * - Parameters are its respective view and its position
+     * */
+
+    public interface ClickListener{
+        void onClick(View view, int position);
+        void onLongClick(View view, int position);
+    }
+
+    /**
+     * RecyclerView: Implementing single item click and long press
+     *
+     * - creating an innerclass implementing RevyvlerView.OnItemTouchListener
+     * - Pass clickListener interface as parameter
+     * */
+
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
+
+        private ClickListener clicklistener;
+        private GestureDetector gestureDetector;
+
+        public RecyclerTouchListener(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
+
+            this.clicklistener=clicklistener;
+            gestureDetector=new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child=recycleView.findChildViewUnder(e.getX(),e.getY());
+                    if(child!=null && clicklistener!=null){
+                        clicklistener.onLongClick(child,recycleView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child=rv.findChildViewUnder(e.getX(),e.getY());
+            if(child!=null && clicklistener!=null && gestureDetector.onTouchEvent(e)){
+                clicklistener.onClick(child,rv.getChildAdapterPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
+
 }
+
+
