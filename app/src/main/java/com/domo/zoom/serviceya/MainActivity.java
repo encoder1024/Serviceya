@@ -110,11 +110,107 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        fab2.setOnClickListener(new View.OnClickListener() { //AGUA
+            @Override
+            public void onClick(View v) {
+                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
+                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //creating and initializing an Intent object
+                Intent intent = new Intent(getBaseContext(), Categoria.class);
+                //attach the key value pair using putExtra to this intent
+                String user_name = "Energía";
+                intent.putExtra("GRUPO_NAME", user_name);
+                //starting the activity
+                startActivity(intent);
+            }
+        });
+
+        fab3.setOnClickListener(new View.OnClickListener() { //AGUA
+            @Override
+            public void onClick(View v) {
+                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
+                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //creating and initializing an Intent object
+                Intent intent = new Intent(getBaseContext(), Categoria.class);
+                //attach the key value pair using putExtra to this intent
+                String user_name = "Temperatura";
+                intent.putExtra("GRUPO_NAME", user_name);
+                //starting the activity
+                startActivity(intent);
+            }
+        });
+
+        fab4.setOnClickListener(new View.OnClickListener() { //AGUA
+            @Override
+            public void onClick(View v) {
+                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
+                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //creating and initializing an Intent object
+                Intent intent = new Intent(getBaseContext(), Categoria.class);
+                //attach the key value pair using putExtra to this intent
+                String user_name = "Suelos";
+                intent.putExtra("GRUPO_NAME", user_name);
+                //starting the activity
+                startActivity(intent);
+            }
+        });
+
+        fab5.setOnClickListener(new View.OnClickListener() { //AGUA
+            @Override
+            public void onClick(View v) {
+                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
+                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //creating and initializing an Intent object
+                Intent intent = new Intent(getBaseContext(), Categoria.class);
+                //attach the key value pair using putExtra to this intent
+                String user_name = "Aire";
+                intent.putExtra("GRUPO_NAME", user_name);
+                //starting the activity
+                startActivity(intent);
+            }
+        });
+
+        fab6.setOnClickListener(new View.OnClickListener() { //AGUA
+            @Override
+            public void onClick(View v) {
+                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
+                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //creating and initializing an Intent object
+                Intent intent = new Intent(getBaseContext(), Categoria.class);
+                //attach the key value pair using putExtra to this intent
+                String user_name = "Estructuras";
+                intent.putExtra("GRUPO_NAME", user_name);
+                //starting the activity
+                startActivity(intent);
+            }
+        });
+
         fab7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fab7Touch = true;
                 toggleToolbar();
+            }
+        });
+
+        fab8.setOnClickListener(new View.OnClickListener() { //AGUA
+            @Override
+            public void onClick(View v) {
+                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
+                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //creating and initializing an Intent object
+                Intent intent = new Intent(getBaseContext(), Categoria.class);
+                //attach the key value pair using putExtra to this intent
+                String user_name = "Tecnología";
+                intent.putExtra("GRUPO_NAME", user_name);
+                //starting the activity
+                startActivity(intent);
             }
         });
 
