@@ -10,4 +10,5 @@
     <string name="prestador_nombre">Nombre del Prestador</string>
     <string name="prestador_calificacion">Calificación</string>
     <string name="prestador_comentario">Comentario</string>
+    <string name="title_activity_categoria">Especialidad</string>
 </resources>
