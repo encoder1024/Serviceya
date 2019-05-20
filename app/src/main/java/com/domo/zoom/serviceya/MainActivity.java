@@ -612,7 +612,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Toast.makeText(MainActivity.this, "Estamos buscando en la base...",
+                    Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getBaseContext(), Buscador.class);
+            //attach the key value pair using putExtra to this intent
+            String user_name = acQueNec.getText().toString();
+            intent.putExtra("QUE_NECESITAS", user_name);
+            //starting the activity
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
