@@ -64,7 +64,7 @@
         android:layout_gravity="center"
         android:elevation="8dp"
         android:visibility="invisible"
-        android:text="Temperatura"
+        android:text="Climatización"
         android:textColor="#fff" />
 
     <android.support.design.widget.FloatingActionButton
@@ -106,7 +106,7 @@
         android:layout_gravity="center"
         android:elevation="8dp"
         android:visibility="invisible"
-        android:text="Aire"
+        android:text="Servicio"
         android:textColor="#fff" />
 
     <android.support.design.widget.FloatingActionButton
