@@ -612,7 +612,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            Toast.makeText(MainActivity.this, "Estamos buscando en la base...",
+            Toast.makeText(MainActivity.this, "Escribe en el renglón superior...",
                     Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getBaseContext(), Buscador.class);
             //attach the key value pair using putExtra to this intent
