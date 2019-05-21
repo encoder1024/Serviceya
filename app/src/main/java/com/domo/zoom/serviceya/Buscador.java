@@ -44,6 +44,8 @@ public class Buscador extends AppCompatActivity {
         cbGrupo = findViewById(R.id.cbSector);
         cbCategoria = findViewById(R.id.cbEspecialidad);
 
+        rvPresEncontrados = findViewById(R.id.rvPrestEncontrados);
+
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
