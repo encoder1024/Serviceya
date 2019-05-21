@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity
         fab1.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -120,9 +120,9 @@ public class MainActivity extends AppCompatActivity
         fab2.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                // es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -136,9 +136,9 @@ public class MainActivity extends AppCompatActivity
         fab3.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -152,9 +152,9 @@ public class MainActivity extends AppCompatActivity
         fab4.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -168,9 +168,9 @@ public class MainActivity extends AppCompatActivity
         fab5.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -184,9 +184,9 @@ public class MainActivity extends AppCompatActivity
         fab6.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -208,9 +208,9 @@ public class MainActivity extends AppCompatActivity
         fab8.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent

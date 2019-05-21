@@ -5,13 +5,19 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.Spinner;
 
 public class Buscador extends AppCompatActivity {
 
     private AutoCompleteTextView acQueBuscas;
+    private Spinner spProvincia, spLocalidad, spGrupo, spCategoria;
+    private CheckBox cbProvincia, cbLocalidad, cbGrupo, cbCategoria;
+    private RecyclerView rvPresEncontrados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +33,17 @@ public class Buscador extends AppCompatActivity {
         String que_buscas = intent.getStringExtra("QUE_NECESITAS");
 
         acQueBuscas = findViewById(R.id.acQueBuscas);
+
+        spProvincia = findViewById(R.id.spProvincia);
+        spLocalidad = findViewById(R.id.spLocalidad);
+        spGrupo = findViewById(R.id.spSector);
+        spCategoria = findViewById(R.id.spEspecialidad);
+
+        cbProvincia = findViewById(R.id.cbProvincia);
+        cbLocalidad = findViewById(R.id.cbLocalidad);
+        cbGrupo = findViewById(R.id.cbSector);
+        cbCategoria = findViewById(R.id.cbEspecialidad);
+
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
