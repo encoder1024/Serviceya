@@ -453,7 +453,7 @@ public class Buscador extends AppCompatActivity {
                         //spGrupo.getItemAtPosition(positionGrupo).toString(),
                         String.valueOf(positionGrupo),
                         spCategoria.getItemAtPosition(i).toString(),
-                        acQueBuscas.getText().toString().replaceAll("\u00a0", "@")
+                        acQueBuscas.getText().toString().replaceAll("\u00a0", "")
                 );
             }
 
