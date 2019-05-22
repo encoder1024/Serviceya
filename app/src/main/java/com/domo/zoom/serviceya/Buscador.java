@@ -270,7 +270,7 @@ public class Buscador extends AppCompatActivity {
                     case Api.URL_READ_LOCALIDADES:
                         JSONObject objectLocalidad = new JSONObject(s);
                         if (!objectLocalidad.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectLocalidad.getString("message") + ": provincias!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), objectLocalidad.getString("message") + ": localidades!", Toast.LENGTH_SHORT).show();
                             //refreshing the herolist after every operation
                             //so we get an updated list
                             //we will create this method right now it is commented
@@ -282,7 +282,7 @@ public class Buscador extends AppCompatActivity {
                     case Api.URL_READ_GRUPOS + "=":
                         JSONObject objectGrupo = new JSONObject(s);
                         if (!objectGrupo.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectGrupo.getString("message") + ": provincias!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), objectGrupo.getString("message") + ": grupos!", Toast.LENGTH_SHORT).show();
                             //refreshing the herolist after every operation
                             //so we get an updated list
                             //we will create this method right now it is commented
@@ -398,11 +398,11 @@ public class Buscador extends AppCompatActivity {
 
         for (int i = 0; i < gruposJson.length(); i++){
             JSONObject obj = gruposJson.getJSONObject(i);
-            grupos.add(obj.get("grupo").toString());
+            grupos.add(obj.get("nombre").toString());
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, provincias);
+                android.R.layout.simple_spinner_item, grupos);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spGrupo.setAdapter(dataAdapter);
 
@@ -412,7 +412,7 @@ public class Buscador extends AppCompatActivity {
 
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
-                positionGrupo = i;
+                positionGrupo = i+1;
                 cbGrupo.setChecked(true);
                 buscarCategorias(spGrupo.getItemAtPosition(i).toString());
             }
@@ -433,7 +433,7 @@ public class Buscador extends AppCompatActivity {
             categorias.add(obj.get("categoria").toString());
         }
 
-        spCategoria = findViewById(R.id.sp_categorias);
+        spCategoria = findViewById(R.id.spEspecialidad);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, categorias);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -446,12 +446,14 @@ public class Buscador extends AppCompatActivity {
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 cbCategoria.setChecked(true);
+
                 actualizarPrestadores(
                         spProvincia.getItemAtPosition(positionProvincia).toString(),
                         spLocalidad.getItemAtPosition(positionLocalidad).toString(),
-                        spGrupo.getItemAtPosition(positionGrupo).toString(),
+                        //spGrupo.getItemAtPosition(positionGrupo).toString(),
+                        String.valueOf(positionGrupo),
                         spCategoria.getItemAtPosition(i).toString(),
-                        acQueBuscas.getText().toString()
+                        acQueBuscas.getText().toString().replaceAll("\u00a0", "@")
                 );
             }
 
