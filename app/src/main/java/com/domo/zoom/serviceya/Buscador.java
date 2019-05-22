@@ -12,6 +12,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -115,6 +117,25 @@ public class Buscador extends AppCompatActivity {
             }
         }));
 
+        acQueBuscas.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                buscarPrestadores(s.toString(), 10);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         buscarPrestadores(que_buscas, 10);
         buscarProvincias();
 
@@ -123,8 +144,10 @@ public class Buscador extends AppCompatActivity {
 
     private void buscarPrestadores(String queBusco, int limite) {
 
+        String filtroQueBusco = queBusco.replaceAll("\u00a0", "@");
+
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_PRESTADORES_SEARCH + queBusco + "&limite=" + limite, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_PRESTADORES_SEARCH_INICIAL + filtroQueBusco + "&limite=" + limite, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -232,7 +255,7 @@ public class Buscador extends AppCompatActivity {
             String[] urlmix = url.split("=");
             try {
                 switch (urlmix[0] + "=" + urlmix[1] + "=") {
-                    case Api.URL_READ_PROVINCIAS:
+                    case Api.URL_READ_PROVINCIAS + "=":
                         JSONObject objectSitio = new JSONObject(s);
                         if (!objectSitio.getBoolean("error")) {
                             Toast.makeText(getApplicationContext(), objectSitio.getString("message") + ": provincias!", Toast.LENGTH_SHORT).show();
@@ -256,7 +279,7 @@ public class Buscador extends AppCompatActivity {
                             refreshLocalidades(objectLocalidad.getJSONArray("localidades"));
                         }
                         break;
-                    case Api.URL_READ_GRUPOS:
+                    case Api.URL_READ_GRUPOS + "=":
                         JSONObject objectGrupo = new JSONObject(s);
                         if (!objectGrupo.getBoolean("error")) {
                             Toast.makeText(getApplicationContext(), objectGrupo.getString("message") + ": provincias!", Toast.LENGTH_SHORT).show();
@@ -287,6 +310,13 @@ public class Buscador extends AppCompatActivity {
                             refreshPresList(objectUser.getJSONArray("prestadores"));
                         }
                         break;
+                    case Api.URL_READ_PRESTADORES_SEARCH_INICIAL:
+                        JSONObject objectPres = new JSONObject(s);
+                        if (!objectPres.getBoolean("error")) {
+//                            Toast.makeText(getApplicationContext(), objectUser.getString("message") + ": prestadores!", Toast.LENGTH_SHORT).show();
+                            refreshPresList(objectPres.getJSONArray("prestadores"));
+                        }
+                        break;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -302,7 +332,7 @@ public class Buscador extends AppCompatActivity {
 
         for (int i = 0; i < provinciasJson.length(); i++){
             JSONObject obj = provinciasJson.getJSONObject(i);
-            provincias.add(obj.get("provincia").toString());
+            provincias.add(obj.get("nombre").toString());
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
@@ -317,6 +347,7 @@ public class Buscador extends AppCompatActivity {
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 positionProvincia = i;
+                cbProvincia.setChecked(true);
                 buscarLocalidades(spProvincia.getItemAtPosition(i).toString());
 
             }
@@ -334,7 +365,7 @@ public class Buscador extends AppCompatActivity {
 
         for (int i = 0; i < localidadesJson.length(); i++){
             JSONObject obj = localidadesJson.getJSONObject(i);
-            localidades.add(obj.get("localidad").toString());
+            localidades.add(obj.get("nombre").toString());
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
@@ -349,6 +380,7 @@ public class Buscador extends AppCompatActivity {
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 positionLocalidad = i;
+                cbLocalidad.setChecked(true);
                 buscarGrupos();
 
             }
@@ -381,6 +413,7 @@ public class Buscador extends AppCompatActivity {
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 positionGrupo = i;
+                cbGrupo.setChecked(true);
                 buscarCategorias(spGrupo.getItemAtPosition(i).toString());
             }
 
@@ -412,6 +445,7 @@ public class Buscador extends AppCompatActivity {
 
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
+                cbCategoria.setChecked(true);
                 actualizarPrestadores(
                         spProvincia.getItemAtPosition(positionProvincia).toString(),
                         spLocalidad.getItemAtPosition(positionLocalidad).toString(),

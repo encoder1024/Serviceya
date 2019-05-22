@@ -19,6 +19,7 @@ public class Api {
     static final String URL_READ_SITIOS_FULL = ROOT_URL + "getsitiofull&idSitio=";
     static final String URL_READ_CATEGORIAS = ROOT_URL + "getCategorias&grupoName=";
     static final String URL_READ_PRESTADORES = ROOT_URL + "getProCategoria&categName=";
+    static final String URL_READ_PRESTADORES_SEARCH_INICIAL = ROOT_URL + "getProSearchIni&que=";
     static final String URL_READ_PRESTADORES_SEARCH = ROOT_URL + "getProSearch&provincia=";
     static final String URL_READ_PROVINCIAS = ROOT_URL + "getProvincias";
     static final String URL_READ_LOCALIDADES = ROOT_URL + "getLocalidades&provincia=";
