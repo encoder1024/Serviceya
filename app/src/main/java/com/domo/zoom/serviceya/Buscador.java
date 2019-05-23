@@ -515,6 +515,13 @@ public class Buscador extends AppCompatActivity {
 
         for (int i = 0; i < prestadoresJson.length(); i++){
             JSONObject obj = prestadoresJson.getJSONObject(i);
+
+            if (i>0){
+                if (obj.get("email").toString().equals(prestadores.get(prestadores.size()-1).getEmail())){
+                    continue;
+                }
+            }
+
             prestadores.add(new Prestador(
                     obj.getInt("id"),
                     obj.getString("nombre"),
