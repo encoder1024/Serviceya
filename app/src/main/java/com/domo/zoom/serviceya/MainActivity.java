@@ -29,6 +29,7 @@ import android.widget.TextView;
 //Comento para alfa-release1.1-in
 //Comento para alfa-release1.1-out
 //Comento para alfa-release1.2-in
+//Comento para alfa-release1.2-out
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
