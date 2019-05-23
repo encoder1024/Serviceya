@@ -563,7 +563,7 @@ public class MainActivity extends AppCompatActivity
                     Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getBaseContext(), Buscador.class);
             //attach the key value pair using putExtra to this intent
-            String user_name = acQueNec.getText().toString().replaceAll("\u00a0", "");
+            String user_name = acQueNec.getText().toString().replaceFirst("\\s++$", "");
             intent.putExtra("QUE_NECESITAS", user_name);
             //starting the activity
             startActivity(intent);

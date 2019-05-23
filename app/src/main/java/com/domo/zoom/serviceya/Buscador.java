@@ -156,7 +156,7 @@ public class Buscador extends AppCompatActivity {
 
     private void buscarPrestadores(String queBusco, int limite) {
 
-        String filtroQueBusco = queBusco.replaceAll("\u00a0", "@");
+        String filtroQueBusco = queBusco.replaceFirst("\\s++$", "");
 
         PerformNetworkRequest request = new PerformNetworkRequest(
                 Api.URL_READ_PRESTADORES_SEARCH_INICIAL + filtroQueBusco + "&limite=" + limite, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
@@ -497,7 +497,7 @@ public class Buscador extends AppCompatActivity {
                         localidadesId.get(positionLocalidad), //spLocalidad.getItemAtPosition(positionLocalidad).toString()
                         gruposId.get(positionGrupo), //spGrupo.getItemAtPosition(positionGrupo).toString()
                         categoriasId.get(i), //(positionCategoria), //spCategoria.getItemAtPosition(i).toString()
-                        acQueBuscas.getText().toString().replaceAll("\u00a0", "")
+                        acQueBuscas.getText().toString().replaceFirst("\\s++$", "")
                 );
             }
 
