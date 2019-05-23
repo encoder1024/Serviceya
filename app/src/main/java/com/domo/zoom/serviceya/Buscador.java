@@ -89,7 +89,7 @@ public class Buscador extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        acQueBuscas.setText(que_buscas);
+        acQueBuscas.setText(que_buscas.replaceFirst("\\s++$", ""));
 
 
         mAdapter = new BuscadorAdapter(presListSearch);
@@ -169,7 +169,7 @@ public class Buscador extends AppCompatActivity {
     private void buscarProvincias() {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_PROVINCIAS + acQueBuscas.getText().toString(), //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_PROVINCIAS + acQueBuscas.getText().toString().replaceFirst("\\s++$", ""), //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -199,7 +199,7 @@ public class Buscador extends AppCompatActivity {
     private void buscarCategorias(String grupoName) {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_CATEGORIAS + grupoName + "&queBusco=" + acQueBuscas.getText().toString(), //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_CATEGORIAS + grupoName + "&queBusco=" + acQueBuscas.getText().toString().replaceFirst("\\s++$", ""), //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -370,7 +370,7 @@ public class Buscador extends AppCompatActivity {
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 positionProvincia = i;
                 cbProvincia.setChecked(true);
-                buscarLocalidades(spProvincia.getItemAtPosition(i).toString(), acQueBuscas.getText().toString());
+                buscarLocalidades(spProvincia.getItemAtPosition(i).toString(), acQueBuscas.getText().toString().replaceFirst("\\s++$", ""));
 
             }
 
@@ -412,7 +412,7 @@ public class Buscador extends AppCompatActivity {
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 positionLocalidad = i;
                 cbLocalidad.setChecked(true);
-                buscarGrupos(acQueBuscas.getText().toString());
+                buscarGrupos(acQueBuscas.getText().toString().replaceFirst("\\s++$", ""));
 
             }
 
