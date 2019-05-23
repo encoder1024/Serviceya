@@ -11,4 +11,5 @@
     <string name="prestador_calificacion">Calificación</string>
     <string name="prestador_comentario">Comentario</string>
     <string name="title_activity_categoria">Especialidad</string>
+    <string name="title_activity_buscador">Buscador</string>
 </resources>

@@ -21,9 +21,11 @@ import android.view.MenuItem;
 import android.view.ViewAnimationUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //Comento para alfa-release1.0
 //Comento para alfa-release1.1-in
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayout fabContainer;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5, fab6, fab7, fab8;
     private TextView tvFab1, tvFab2, tvFab3, tvFab4, tvFab5, tvFab6, tvFab8;
+    private AutoCompleteTextView acQueNec;
     private boolean fabMenuOpen = false;
     private boolean toolbarOpen = false;
     private Toolbar myToolbar;
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity
         tvFab6 = findViewById(R.id.tv_fab_6);
         tvFab8 = findViewById(R.id.tv_fab_8);
 
+        acQueNec = findViewById(R.id.actvQueNec);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, myToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
@@ -100,9 +105,9 @@ public class MainActivity extends AppCompatActivity
         fab1.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -116,9 +121,9 @@ public class MainActivity extends AppCompatActivity
         fab2.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                // es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -132,13 +137,13 @@ public class MainActivity extends AppCompatActivity
         fab3.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
-                String user_name = "Temperatura";
+                String user_name = "Climatización";
                 intent.putExtra("GRUPO_NAME", user_name);
                 //starting the activity
                 startActivity(intent);
@@ -148,9 +153,9 @@ public class MainActivity extends AppCompatActivity
         fab4.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -164,13 +169,13 @@ public class MainActivity extends AppCompatActivity
         fab5.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
-                String user_name = "Aire";
+                String user_name = "Servicios";
                 intent.putExtra("GRUPO_NAME", user_name);
                 //starting the activity
                 startActivity(intent);
@@ -180,9 +185,9 @@ public class MainActivity extends AppCompatActivity
         fab6.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -204,9 +209,9 @@ public class MainActivity extends AppCompatActivity
         fab8.setOnClickListener(new View.OnClickListener() { //AGUA
             @Override
             public void onClick(View v) {
-                //TODO: es solo una clase de prueba, la tengo que sacar.
+                //es solo una clase de prueba, la tengo que sacar.
                 //ItemPrestador myItem = new ItemPrestador(R.id.nav_send, "Maxi Climax", "10", "Lo mejor en climatización.");
-                //TODO: tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
+                //tengo que seguir implementando recyclerView con la pagina https://www.androidhive.info/2016/01/android-working-with-recycler-view/
                 //creating and initializing an Intent object
                 Intent intent = new Intent(getBaseContext(), Categoria.class);
                 //attach the key value pair using putExtra to this intent
@@ -274,7 +279,7 @@ public class MainActivity extends AppCompatActivity
         Animation hide_tvfab_8 = AnimationUtils.loadAnimation(getApplication(), R.anim.fab8_hide);
 
 
-        if (!fabMenuOpen) {
+        if (!fabMenuOpen && acQueNec.getText().toString().isEmpty()) {
             int centerX = fabContainer.getWidth() / 2;
             int centerY = fabContainer.getHeight() / 2;
             int startRadius = 0;
@@ -372,7 +377,7 @@ public class MainActivity extends AppCompatActivity
             fab5.startAnimation(show_fab_5);
             fab5.setClickable(true);
             layoutParams = (FrameLayout.LayoutParams) tvFab5.getLayoutParams();
-            layoutParams.rightMargin -= (int) (tvFab5.getWidth() * 5.0);
+            layoutParams.rightMargin -= (int) (tvFab5.getWidth() * 2.7);
             layoutParams.bottomMargin -= (int) (tvFab5.getHeight() * 0);
             tvFab5.setLayoutParams(layoutParams);
             tvFab5.startAnimation(show_tvfab_5);
@@ -415,7 +420,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        } else {
+        } else if (acQueNec.getText().toString().isEmpty()){
 
 
             fab.setImageResource(R.drawable.ic_add);
@@ -505,7 +510,7 @@ public class MainActivity extends AppCompatActivity
             layoutParams.rightMargin += (int) (tvFab4.getWidth() * 2.5);
             layoutParams.bottomMargin -= (int) (tvFab4.getHeight() * 4.6);
             tvFab4.setLayoutParams(layoutParams);
-            tvFab4.startAnimation(hide_fab_4);
+            tvFab4.startAnimation(hide_tvfab_4);
             tvFab4.setClickable(true);
 
             layoutParams = (FrameLayout.LayoutParams) fab5.getLayoutParams();
@@ -515,7 +520,7 @@ public class MainActivity extends AppCompatActivity
             fab5.startAnimation(hide_fab_5);
             fab5.setClickable(true);
             layoutParams = (FrameLayout.LayoutParams) tvFab5.getLayoutParams();
-            layoutParams.rightMargin += (int) (tvFab5.getWidth() * 5.0);
+            layoutParams.rightMargin += (int) (tvFab5.getWidth() * 2.7);
             layoutParams.bottomMargin += (int) (tvFab5.getHeight() * 0);
             tvFab5.setLayoutParams(layoutParams);
             tvFab5.startAnimation(hide_tvfab_5);
@@ -554,7 +559,15 @@ public class MainActivity extends AppCompatActivity
             tvFab8.startAnimation(hide_tvfab_8);
             tvFab8.setClickable(true);
 
-            //TODO: colocar un boton en el menú que muestre la Toolbar.5
+        } else if (!acQueNec.getText().toString().isEmpty()) {
+            Toast.makeText(MainActivity.this, "Estamos buscando en la base...",
+                    Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getBaseContext(), Buscador.class);
+            //attach the key value pair using putExtra to this intent
+            String user_name = acQueNec.getText().toString().replaceFirst("\\s++$", "");
+            intent.putExtra("QUE_NECESITAS", user_name);
+            //starting the activity
+            startActivity(intent);
         }
         fabMenuOpen = !fabMenuOpen;
     }
@@ -600,7 +613,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Toast.makeText(MainActivity.this, "Escribe en el renglón superior...",
+                    Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getBaseContext(), Buscador.class);
+            //attach the key value pair using putExtra to this intent
+            String user_name = acQueNec.getText().toString();
+            intent.putExtra("QUE_NECESITAS", user_name);
+            //starting the activity
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
