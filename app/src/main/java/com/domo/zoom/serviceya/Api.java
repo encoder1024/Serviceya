@@ -15,9 +15,16 @@ public class Api {
     public static final String URL_WRITE_ACT_USER = ROOT_URL + "writeDataUser";
     public static final String URL_WRITE_ADD_USER = ROOT_URL + "writeCreateUser";
     public static final String URL_READ_SITIOS = ROOT_URL + "getsitios";
+
     static final String URL_READ_SITIOS_FULL = ROOT_URL + "getsitiofull&idSitio=";
     static final String URL_READ_CATEGORIAS = ROOT_URL + "getCategorias&grupoName=";
     static final String URL_READ_PRESTADORES = ROOT_URL + "getProCategoria&categName=";
+    static final String URL_READ_PRESTADORES_SEARCH_INICIAL = ROOT_URL + "getProSearchIni&que=";
+    static final String URL_READ_PRESTADORES_SEARCH = ROOT_URL + "getProSearch&provincia=";
+    static final String URL_READ_PROVINCIAS = ROOT_URL + "getProvincias&queBusco=";
+    static final String URL_READ_LOCALIDADES = ROOT_URL + "getLocalidades&provincia=";
+    static final String URL_READ_GRUPOS = ROOT_URL + "getGrupos&queBusco=";
+
     public static final String URL_UPDATE_USER_TOKEN_FB = ROOT_URL + "settokenfb&idUser=";
     public static final String URL_WRITE_ADD_PRO = ROOT_URL + "writeCreatePro";
     public static final String URL_WRITE_ACT_PRO = ROOT_URL + "writeDataPro";
