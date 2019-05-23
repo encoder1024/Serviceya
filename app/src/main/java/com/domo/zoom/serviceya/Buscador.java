@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
 
 public class Buscador extends AppCompatActivity {
 
@@ -45,9 +46,13 @@ public class Buscador extends AppCompatActivity {
     private BuscadorAdapter mAdapter;
     private ArrayList<Prestador> prestadores = new ArrayList<>();
     private ArrayList<String> provincias = new ArrayList<>();
+    private ArrayList<String> provinciasId = new ArrayList<>();
     private ArrayList<String> localidades = new ArrayList<>();
+    private ArrayList<String> localidadesId = new ArrayList<>();
     private ArrayList<String> grupos = new ArrayList<>();
+    private ArrayList<String> gruposId = new ArrayList<>();
     private ArrayList<String> categorias = new ArrayList<>();
+    private ArrayList<String> categoriasId = new ArrayList<>();
     private int positionProvincia;
     private int positionLocalidad;
     private int positionGrupo;
@@ -122,12 +127,19 @@ public class Buscador extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                buscarPrestadores(s.toString(), 10);
+//                actualizarPrestadores(
+//                        provinciasId.get(positionProvincia), //spProvincia.getItemAtPosition(positionProvincia).toString()
+//                        localidadesId.get(positionLocalidad), //spLocalidad.getItemAtPosition(positionLocalidad).toString()
+//                        gruposId.get(positionGrupo), //spGrupo.getItemAtPosition(positionGrupo).toString()
+//                        categoriasId.get(positionCategoria), // String.valueOf(positionCategoria), //spCategoria.getItemAtPosition(i).toString()
+//                        s.toString()
+//                );
+
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                buscarProvincias();
             }
 
             @Override
@@ -136,7 +148,7 @@ public class Buscador extends AppCompatActivity {
             }
         });
 
-        buscarPrestadores(que_buscas, 10);
+        //buscarPrestadores(que_buscas, 10);
         buscarProvincias();
 
 
@@ -157,27 +169,27 @@ public class Buscador extends AppCompatActivity {
     private void buscarProvincias() {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_PROVINCIAS, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_PROVINCIAS + acQueBuscas.getText().toString(), //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
 
     }
 
-    private void buscarLocalidades(String provincia) {
+    private void buscarLocalidades(String provincia, String queBusco) {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_LOCALIDADES + provincia, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_LOCALIDADES + provincia + "&queBusco=" + queBusco, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
 
     }
 
-    private void buscarGrupos() {
+    private void buscarGrupos(String queBusco) {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_GRUPOS, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_GRUPOS + queBusco, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -187,7 +199,7 @@ public class Buscador extends AppCompatActivity {
     private void buscarCategorias(String grupoName) {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_CATEGORIAS + grupoName, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_CATEGORIAS + grupoName + "&queBusco=" + acQueBuscas.getText().toString(), //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -197,8 +209,8 @@ public class Buscador extends AppCompatActivity {
     private void actualizarPrestadores(String provinciaName, String localidadName, String grupoName, String categoriaName, String queBusco) {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_PRESTADORES_SEARCH + provinciaName + "&local=" + localidadName +
-                "&grupo=" + grupoName + "&categoria=" + categoriaName + "&que=" + queBusco,
+                Api.URL_READ_PRESTADORES_SEARCH + provinciaName + "&localidad=" + localidadName +
+                "&grupo=" + grupoName + "&categoria=" + categoriaName + "&queBusco=" + queBusco,
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -255,10 +267,10 @@ public class Buscador extends AppCompatActivity {
             String[] urlmix = url.split("=");
             try {
                 switch (urlmix[0] + "=" + urlmix[1] + "=") {
-                    case Api.URL_READ_PROVINCIAS + "=":
+                    case Api.URL_READ_PROVINCIAS:
                         JSONObject objectSitio = new JSONObject(s);
                         if (!objectSitio.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectSitio.getString("message") + ": provincias!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), objectSitio.getString("message") + ": provincias!", Toast.LENGTH_SHORT).show();
                             //refreshing the herolist after every operation
                             //so we get an updated list
                             //we will create this method right now it is commented
@@ -270,7 +282,7 @@ public class Buscador extends AppCompatActivity {
                     case Api.URL_READ_LOCALIDADES:
                         JSONObject objectLocalidad = new JSONObject(s);
                         if (!objectLocalidad.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectLocalidad.getString("message") + ": localidades!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), objectLocalidad.getString("message") + ": localidades!", Toast.LENGTH_SHORT).show();
                             //refreshing the herolist after every operation
                             //so we get an updated list
                             //we will create this method right now it is commented
@@ -279,10 +291,10 @@ public class Buscador extends AppCompatActivity {
                             refreshLocalidades(objectLocalidad.getJSONArray("localidades"));
                         }
                         break;
-                    case Api.URL_READ_GRUPOS + "=":
+                    case Api.URL_READ_GRUPOS:
                         JSONObject objectGrupo = new JSONObject(s);
                         if (!objectGrupo.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectGrupo.getString("message") + ": grupos!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), objectGrupo.getString("message") + ": grupos!", Toast.LENGTH_SHORT).show();
                             //refreshing the herolist after every operation
                             //so we get an updated list
                             //we will create this method right now it is commented
@@ -328,11 +340,21 @@ public class Buscador extends AppCompatActivity {
 
     private void refreshProvincias(JSONArray provinciasJson) throws JSONException {
 
+        if (provinciasJson.isNull(0)) return;
+
         provincias.clear();
+        provinciasId.clear();
 
         for (int i = 0; i < provinciasJson.length(); i++){
             JSONObject obj = provinciasJson.getJSONObject(i);
+            if (i>0){
+                if (obj.get("nombre").toString().equals(provincias.get(provincias.size()-1))){
+                    continue;
+                }
+            }
+
             provincias.add(obj.get("nombre").toString());
+            provinciasId.add(obj.get("id").toString());
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
@@ -348,7 +370,7 @@ public class Buscador extends AppCompatActivity {
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 positionProvincia = i;
                 cbProvincia.setChecked(true);
-                buscarLocalidades(spProvincia.getItemAtPosition(i).toString());
+                buscarLocalidades(spProvincia.getItemAtPosition(i).toString(), acQueBuscas.getText().toString());
 
             }
 
@@ -361,11 +383,20 @@ public class Buscador extends AppCompatActivity {
 
     private void refreshLocalidades(JSONArray localidadesJson) throws JSONException {
 
+        if (localidadesJson.isNull(0)) return;
+
         localidades.clear();
+        localidadesId.clear();
 
         for (int i = 0; i < localidadesJson.length(); i++){
             JSONObject obj = localidadesJson.getJSONObject(i);
+            if (i>0){
+                if (obj.get("nombre").toString().equals(localidades.get(localidades.size()-1))){
+                    continue;
+                }
+            }
             localidades.add(obj.get("nombre").toString());
+            localidadesId.add(obj.get("id").toString());
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
@@ -381,7 +412,7 @@ public class Buscador extends AppCompatActivity {
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 positionLocalidad = i;
                 cbLocalidad.setChecked(true);
-                buscarGrupos();
+                buscarGrupos(acQueBuscas.getText().toString());
 
             }
 
@@ -395,10 +426,17 @@ public class Buscador extends AppCompatActivity {
     private void refreshGrupos(JSONArray gruposJson) throws JSONException {
 
         grupos.clear();
+        gruposId.clear();
 
         for (int i = 0; i < gruposJson.length(); i++){
             JSONObject obj = gruposJson.getJSONObject(i);
+            if (i>0){
+                if (obj.get("nombre").toString().equals(grupos.get(grupos.size()-1))){
+                    continue;
+                }
+            }
             grupos.add(obj.get("nombre").toString());
+            gruposId.add(obj.get("grupo_id").toString());
         }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
@@ -412,7 +450,7 @@ public class Buscador extends AppCompatActivity {
 
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
-                positionGrupo = i+1;
+                positionGrupo = i;
                 cbGrupo.setChecked(true);
                 buscarCategorias(spGrupo.getItemAtPosition(i).toString());
             }
@@ -427,10 +465,17 @@ public class Buscador extends AppCompatActivity {
     private void refreshCategorias(JSONArray categoriasJson) throws JSONException {
 
         categorias.clear();
+        categoriasId.clear();
 
         for (int i = 0; i < categoriasJson.length(); i++){
             JSONObject obj = categoriasJson.getJSONObject(i);
+            if (i>0){
+                if (obj.get("categoria").toString().equals(categorias.get(categorias.size()-1))){
+                    continue;
+                }
+            }
             categorias.add(obj.get("categoria").toString());
+            categoriasId.add(obj.get("id").toString());
         }
 
         spCategoria = findViewById(R.id.spEspecialidad);
@@ -446,13 +491,12 @@ public class Buscador extends AppCompatActivity {
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
                 cbCategoria.setChecked(true);
-
+                positionCategoria = i;
                 actualizarPrestadores(
-                        spProvincia.getItemAtPosition(positionProvincia).toString(),
-                        spLocalidad.getItemAtPosition(positionLocalidad).toString(),
-                        //spGrupo.getItemAtPosition(positionGrupo).toString(),
-                        String.valueOf(positionGrupo),
-                        spCategoria.getItemAtPosition(i).toString(),
+                        provinciasId.get(positionProvincia), //spProvincia.getItemAtPosition(positionProvincia).toString()
+                        localidadesId.get(positionLocalidad), //spLocalidad.getItemAtPosition(positionLocalidad).toString()
+                        gruposId.get(positionGrupo), //spGrupo.getItemAtPosition(positionGrupo).toString()
+                        categoriasId.get(i), //(positionCategoria), //spCategoria.getItemAtPosition(i).toString()
                         acQueBuscas.getText().toString().replaceAll("\u00a0", "")
                 );
             }
@@ -493,7 +537,7 @@ public class Buscador extends AppCompatActivity {
                     obj.getString("imagen"),
                     obj.getString("nombre")+" "+obj.getString("apellido"),
                     "Calificación en proceso...",
-                    "Comentarios en proceso..."
+                    "Miembro desde " + obj.getString("created_at")
             ));
         }
 

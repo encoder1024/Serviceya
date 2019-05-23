@@ -21,9 +21,9 @@ public class Api {
     static final String URL_READ_PRESTADORES = ROOT_URL + "getProCategoria&categName=";
     static final String URL_READ_PRESTADORES_SEARCH_INICIAL = ROOT_URL + "getProSearchIni&que=";
     static final String URL_READ_PRESTADORES_SEARCH = ROOT_URL + "getProSearch&provincia=";
-    static final String URL_READ_PROVINCIAS = ROOT_URL + "getProvincias";
+    static final String URL_READ_PROVINCIAS = ROOT_URL + "getProvincias&queBusco=";
     static final String URL_READ_LOCALIDADES = ROOT_URL + "getLocalidades&provincia=";
-    static final String URL_READ_GRUPOS = ROOT_URL + "getGrupos";
+    static final String URL_READ_GRUPOS = ROOT_URL + "getGrupos&queBusco=";
 
     public static final String URL_UPDATE_USER_TOKEN_FB = ROOT_URL + "settokenfb&idUser=";
     public static final String URL_WRITE_ADD_PRO = ROOT_URL + "writeCreatePro";
