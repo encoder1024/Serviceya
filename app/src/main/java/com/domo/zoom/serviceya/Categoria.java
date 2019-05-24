@@ -119,7 +119,7 @@ public class Categoria extends AppCompatActivity {
     private void actualizarPrestadores(String categoriaName) {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_PRESTADORES + categoriaName, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_PRESTADORES + categoriaName,
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -128,9 +128,8 @@ public class Categoria extends AppCompatActivity {
 
     private void buscarCategorias(String grupoName) {
 
-        //TODO
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_CATEGORIAS + grupoName, //TODO:tengo que cambiar la URL en la Api.class y en el lado server PHP...
+                Api.URL_READ_CATEGORIAS + grupoName,
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
