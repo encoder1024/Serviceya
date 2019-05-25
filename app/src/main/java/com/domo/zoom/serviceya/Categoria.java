@@ -1,10 +1,7 @@
 package com.domo.zoom.serviceya;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,9 +28,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +86,12 @@ public class Categoria extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+                Intent intent = new Intent(getBaseContext(), PrestadorShow.class);
+                //attach the key value pair using putExtra to this intent
+                String prestador_id = String.valueOf(prestadores.get(position).getId());
+                intent.putExtra("PRESTADOR_ID", prestador_id);
+                //starting the activity
+                startActivity(intent);
             }
 
             @Override
@@ -129,7 +128,7 @@ public class Categoria extends AppCompatActivity {
     private void buscarCategorias(String grupoName) {
 
         PerformNetworkRequest request = new PerformNetworkRequest(
-                Api.URL_READ_CATEGORIAS + grupoName,
+                Api.URL_READ_CATEGORIAS + grupoName + "&queBusco=" + "milmil",
                 null,
                 Constants.CODE_GET_REQUEST);
         request.execute();
@@ -269,6 +268,11 @@ public class Categoria extends AppCompatActivity {
 
         for (int i = 0; i < categoriasJson.length(); i++){
             JSONObject obj = categoriasJson.getJSONObject(i);
+            if (i>0){
+                if (obj.get("categoria").toString().equals(categorias.get(categorias.size()-1))){
+                    continue;
+                }
+            }
             categorias.add(obj.get("categoria").toString());
         }
 
