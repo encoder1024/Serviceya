@@ -1,12 +1,17 @@
 package com.domo.zoom.serviceya;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +42,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class Buscador extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 115;
     private AutoCompleteTextView acQueBuscas;
     private Spinner spProvincia, spLocalidad, spGrupo, spCategoria;
     private CheckBox cbProvincia, cbLocalidad, cbGrupo, cbCategoria;
@@ -113,12 +119,31 @@ public class Buscador extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+                Intent intent = new Intent(getBaseContext(), PrestadorShow.class);
+                //attach the key value pair using putExtra to this intent
+                intent.putExtra("PRESTADOR_NOMBRE",
+                        prestadores.get(position).getNombre()
+                                + " " +
+                                prestadores.get(position).getApellido());
+                String prestador_phone = prestadores.get(position).getCelular();
+                intent.putExtra("PRESTADOR_PHONE", prestador_phone);
+                //starting the activity
+                startActivity(intent);
             }
 
             @Override
             public void onLongClick(View view, int position) {
                 Toast.makeText(Buscador.this, "Long press on position :"+position,
                         Toast.LENGTH_LONG).show();
+                if (ContextCompat.checkSelfPermission( getApplicationContext(),
+                        Manifest.permission.CALL_PHONE)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:"+ prestadores.get(position).getCelular()));//change the number
+                    startActivity(callIntent);
+                } else {
+                    tengoPermisoLlamadas();
+                }
             }
         }));
 
@@ -152,6 +177,61 @@ public class Buscador extends AppCompatActivity {
         buscarProvincias();
 
 
+    }
+
+    private void tengoPermisoLlamadas() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission( getApplicationContext(),
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CALL_PHONE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     private void buscarPrestadores(String queBusco, int limite) {

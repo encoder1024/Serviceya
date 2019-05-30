@@ -88,8 +88,12 @@ public class Categoria extends AppCompatActivity {
                 });
                 Intent intent = new Intent(getBaseContext(), PrestadorShow.class);
                 //attach the key value pair using putExtra to this intent
-                String prestador_id = String.valueOf(prestadores.get(position).getId());
-                intent.putExtra("PRESTADOR_ID", prestador_id);
+                intent.putExtra("PRESTADOR_NOMBRE",
+                        prestadores.get(position).getNombre()
+                                + " " +
+                                prestadores.get(position).getApellido());
+                String prestador_phone = prestadores.get(position).getCelular();
+                intent.putExtra("PRESTADOR_PHONE", prestador_phone);
                 //starting the activity
                 startActivity(intent);
             }
