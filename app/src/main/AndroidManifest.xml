@@ -14,6 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".PrestadorShow"
+            android:label="@string/title_activity_show_prestador"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Buscador"
             android:label="@string/title_activity_buscador"
             android:parentActivityName=".MainActivity"
