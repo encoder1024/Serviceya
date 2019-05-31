@@ -256,7 +256,7 @@ public class Categoria extends AppCompatActivity {
                     obj.getString("imagen"),
                     obj.getString("nombre")+" "+obj.getString("apellido"),
                     "Calificación en proceso...",
-                    "Comentarios en proceso..."
+                    "Miembro desde " + obj.getString("created_at")
             ));
         }
 
