@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -638,5 +639,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        if (fabMenuOpen && !TextUtils.isEmpty(acQueNec.toString())) {
+            acQueNec.setText("");
+            fabMenuOpen = !fabMenuOpen;
+        }
     }
 }
