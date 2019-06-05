@@ -13,10 +13,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 public class PrestadorShow extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 113;
+    TextView display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +31,31 @@ public class PrestadorShow extends AppCompatActivity {
         Intent intent = getIntent();
         //get the attached extras from the intent
         //we should use the same key as we used to attach the data.
+        final String prestador_id = intent.getStringExtra("PRESTADOR_ID");
         String prestador_nombre = intent.getStringExtra("PRESTADOR_NOMBRE");
         final String prestador_phone = intent.getStringExtra("PRESTADOR_PHONE");
+        final String prestador_web = intent.getStringExtra("PRESTADOR_WEB");
+        final String prestador_email = intent.getStringExtra("PRESTADOR_EMAIL");
+        final String prestador_imagen = intent.getStringExtra("PRESTADOR_IMAGEN");
+        final String prestador_servicios = intent.getStringExtra("PRESTADOR_SERVICIO");
 
         ActionBar ab = getSupportActionBar();
         if (ab != null){
             ab.setTitle(prestador_nombre);
         }
+
+        display = findViewById(R.id.tvShowPres);
+
+        String sentence = "Teléfono: " + prestador_phone + "\n";
+        sentence = sentence + "Web: " + prestador_web + "\n";
+        sentence = sentence + "Email: " + prestador_email + "\n";
+        sentence = sentence + "Servicios: " + prestador_servicios + "\n\n";
+        sentence = sentence + getResources().getString(R.string.large_text);
+
+
+        display.setText(sentence);
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +66,7 @@ public class PrestadorShow extends AppCompatActivity {
                 if (ContextCompat.checkSelfPermission( getApplicationContext(),
                         Manifest.permission.CALL_PHONE)
                         == PackageManager.PERMISSION_GRANTED) {
+                    //TODO: sendInteration(prestador_id, cliente_id);
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse("tel:"+ prestador_phone));//change the number
                     startActivity(callIntent);

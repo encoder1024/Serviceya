@@ -121,12 +121,12 @@ public class Buscador extends AppCompatActivity {
                 });
                 Intent intent = new Intent(getBaseContext(), PrestadorShow.class);
                 //attach the key value pair using putExtra to this intent
-                intent.putExtra("PRESTADOR_NOMBRE",
-                        prestadores.get(position).getNombre()
-                                + " " +
-                                prestadores.get(position).getApellido());
-                String prestador_phone = prestadores.get(position).getCelular();
-                intent.putExtra("PRESTADOR_PHONE", prestador_phone);
+                intent.putExtra("PRESTADOR_ID", prestadores.get(position).getId());
+                intent.putExtra("PRESTADOR_NOMBRE",prestadores.get(position).getNombre() + " " + prestadores.get(position).getApellido());
+                intent.putExtra("PRESTADOR_PHONE", prestadores.get(position).getCelular());
+                intent.putExtra("PRESTADOR_WEB", prestadores.get(position).getWeb());
+                intent.putExtra("PRESTADOR_EMAIL", prestadores.get(position).getEmail());
+                intent.putExtra("PRESTADOR_IMAGEN", prestadores.get(position).getImagen());
                 //starting the activity
                 startActivity(intent);
             }
