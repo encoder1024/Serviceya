@@ -697,6 +697,13 @@ public class Buscador extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(Buscador.this,
+                "Por favor usar la flecha de regreso, arriba a la izquierda...", Toast.LENGTH_LONG)
+                .show();
+    }
 }
 
 //        FloatingActionButton fab = findViewById(R.id.fab);

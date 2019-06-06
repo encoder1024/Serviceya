@@ -2,7 +2,9 @@ package com.domo.zoom.serviceya;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -39,6 +41,15 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String KEY_USER_EXISTE = "key_existe";
+    public static final String KEY_USER_ID = "key_id";
+    public static final String KEY_USER_NOMBRE = "key_nombre";
+    public static final String KEY_USER_APELLIDO = "key_apellido";
+    public static final String KEY_USER_EMAIL = "key_email";
+    public static final String KEY_USER_CREATED_AT = "key_created_at";
+    public static final String KEY_USER_CELULAR = "key_celular";
+    public static final String KEY_USER_VEHICULO_ID = "key_id_vehiculo";
+
     private LinearLayout fabContainer;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5, fab6, fab7, fab8;
     private TextView tvFab1, tvFab2, tvFab3, tvFab4, tvFab5, tvFab6, tvFab8;
@@ -48,10 +59,19 @@ public class MainActivity extends AppCompatActivity
     private Toolbar myToolbar;
     private boolean fab7Touch = false;
 
+    static public SharedPreferences pref;
+    public static boolean isAppRunning;
+    private static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        isAppRunning = true;
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        context = GlobalApplication.getAppContext();
+
         myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
@@ -642,12 +662,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
 
         if (fabMenuOpen && !TextUtils.isEmpty(acQueNec.toString())) {
             acQueNec.setText("");
             fabMenuOpen = !fabMenuOpen;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (fabMenuOpen && !TextUtils.isEmpty(acQueNec.toString())) {
+            acQueNec.setText("");
+            fabMenuOpen = !fabMenuOpen;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isAppRunning = false;
     }
 }

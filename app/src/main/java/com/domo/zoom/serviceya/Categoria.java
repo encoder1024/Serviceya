@@ -366,6 +366,13 @@ public class Categoria extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(Categoria.this,
+                "Por favor usar la flecha de regreso, arriba a la izquierda...", Toast.LENGTH_LONG)
+                .show();
+    }
+
 }
 
 

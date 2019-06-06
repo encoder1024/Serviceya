@@ -3,6 +3,8 @@ package com.domo.zoom.serviceya;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,8 +14,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
+
+import static android.graphics.Typeface.BOLD;
 
 public class PrestadorShow extends AppCompatActivity {
 
@@ -46,14 +55,25 @@ public class PrestadorShow extends AppCompatActivity {
 
         display = findViewById(R.id.tvShowPres);
 
-        String sentence = "Teléfono: " + prestador_phone + "\n";
-        sentence = sentence + "Web: " + prestador_web + "\n";
-        sentence = sentence + "Email: " + prestador_email + "\n";
-        sentence = sentence + "Servicios: " + prestador_servicios + "\n\n";
+        String sentence = "Teléfono: " + prestador_phone + "\n\n";
+        sentence = sentence + "Web: \n" + prestador_web + "\n\n";
+        sentence = sentence + "Email: \n" + prestador_email + "\n\n";
+        sentence = sentence + "Servicios: \n" + prestador_servicios + "\n\n";
         sentence = sentence + getResources().getString(R.string.large_text);
 
+        SpannableString s = new SpannableString(sentence);
 
-        display.setText(sentence);
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), 0, 9, 0);
+        s.setSpan(new StyleSpan(Typeface.BOLD), 0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Web:"), sentence.indexOf("Web:")+4, 0);
+        s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Web:"), sentence.indexOf("Web:")+4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Email:"), sentence.indexOf("Email:")+5, 0);
+        s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Email:"), sentence.indexOf("Email:")+5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Servicios:"), sentence.indexOf("Servicios:")+10, 0);
+        s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Servicios:"), sentence.indexOf("Servicios:")+10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        s.setSpan(new RelativeSizeSpan(1.3f), sentence.indexOf("Teléfono"), sentence.length(), 0);
+
+        display.setText(s);
 
 
 

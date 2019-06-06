@@ -31,6 +31,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="Que necesitas?"
+        android:inputType="text"
+        android:maxLength="49"
         android:maxLines="1"
         android:textAlignment="center"
         android:textSize="25sp"
