@@ -41,15 +41,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final String KEY_USER_EXISTE = "key_existe";
-    public static final String KEY_USER_ID = "key_id";
-    public static final String KEY_USER_NOMBRE = "key_nombre";
-    public static final String KEY_USER_APELLIDO = "key_apellido";
-    public static final String KEY_USER_EMAIL = "key_email";
-    public static final String KEY_USER_CREATED_AT = "key_created_at";
-    public static final String KEY_USER_CELULAR = "key_celular";
-    public static final String KEY_USER_VEHICULO_ID = "key_id_vehiculo";
-
     private LinearLayout fabContainer;
     private FloatingActionButton fab, fab1, fab2, fab3, fab4, fab5, fab6, fab7, fab8;
     private TextView tvFab1, tvFab2, tvFab3, tvFab4, tvFab5, tvFab6, tvFab8;
@@ -245,7 +236,21 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        if (!pref.getBoolean(Constants.KEY_USER_EXISTE, false)) {
+            Intent myIntent = new Intent(MainActivity.this, UserDataActual.class);
+            myIntent.putExtra("key", "registrarUser"); //Optional parameters
+            MainActivity.this.startActivityForResult(myIntent, 113);
+        } else if(!pref.getBoolean(Constants.KEY_USER_FINAL, true)){
 
+            Intent intent = new Intent(MainActivity.this, PrestadorShow.class);
+            intent.putExtra("PRESTADOR_ID", pref.getString(Constants.KEY_USER_ID, "1"));
+            intent.putExtra("PRESTADOR_NOMBRE", pref.getString(Constants.KEY_USER_NOMBRE + " " + Constants.KEY_USER_APELLIDO, "Sin Datos")); //prestadores.get(position).getNombre() + " " + prestadores.get(position).getApellido()
+            intent.putExtra("PRESTADOR_PHONE", pref.getString(Constants.KEY_USER_CELULAR, "Sin Datos"));
+            intent.putExtra("PRESTADOR_WEB", pref.getString(Constants.KEY_USER_WEB, "Sin Datos"));
+            intent.putExtra("PRESTADOR_EMAIL", pref.getString(Constants.KEY_USER_EMAIL, "Sin Datos"));
+            intent.putExtra("PRESTADOR_IMAGEN", pref.getString(Constants.KEY_USER_IMAGEN, "Sin Datos"));
+            MainActivity.this.startActivity(intent);
+        }
     }
 
 
