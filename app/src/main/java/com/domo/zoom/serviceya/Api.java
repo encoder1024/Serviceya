@@ -14,7 +14,7 @@ public class Api {
     public static final String URL_READ_MODELOS_POR_MARCA_VEHI = ROOT_URL + "readModelos&id=";
     public static final String URL_WRITE_ACT_USER = ROOT_URL + "writeDataUser";
     public static final String URL_WRITE_ADD_USER = ROOT_URL + "writeCreateUser";
-    public static final String URL_READ_SITIOS = ROOT_URL + "getsitios";
+    public static final String URL_LOGIN_PRES = ROOT_URL + "getLogin";
 
     static final String URL_READ_SITIOS_FULL = ROOT_URL + "getsitiofull&idSitio=";
     static final String URL_READ_CATEGORIAS = ROOT_URL + "getCategorias&grupoName=";
