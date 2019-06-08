@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity
             Intent myIntent = new Intent(MainActivity.this, UserDataActual.class);
             myIntent.putExtra("key", "registrarUser"); //Optional parameters
             MainActivity.this.startActivityForResult(myIntent, 113);
-        } else if(!pref.getBoolean(Constants.KEY_USER_FINAL, true)){
+        } else if(!isUserFinal()){
 
             Intent intent = new Intent(MainActivity.this, PrestadorShow.class);
             intent.putExtra("PRESTADOR_ID", pref.getString(Constants.KEY_USER_ID, "1"));
@@ -260,6 +260,9 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == 113) {
             if(resultCode == Activity.RESULT_OK){
                 String result=data.getStringExtra("result");
+                if(result.equals("Nuevo Usuario Final Cargado OK")){
+                    String userId = data.getStringExtra("newUserId");
+                }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -267,7 +270,9 @@ public class MainActivity extends AppCompatActivity
         }
     }//onActivityResult
 
-
+    private boolean isUserFinal(){
+        return pref.getBoolean(Constants.KEY_USER_FINAL, true);
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void toggleToolbar() {

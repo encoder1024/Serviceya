@@ -141,28 +141,26 @@ public class UserDataActual extends AppCompatActivity {
                 if (isUserFinal()){
                     //TODO: cambiar URL para usar Api de Pronto Service correctamente.
                     PerformNetworkRequest request = new PerformNetworkRequest(
-                            Api.URL_WRITE_ADD_USER + "'" + etEmail.getText().toString() +"'",
+                            Api.URL_WRITE_ADD_USER +
+                                    "&nombreUser="+new Norm(etName.getText().toString()).cleanString()+
+                                    "&apellidoUser="+new Norm(etLastName.getText().toString()).cleanString()+
+                                    "&emailUser="+new Norm(etEmail.getText().toString()).cleanString()+
+                                    "&celularUser="+new Norm(etCelular.getText().toString()).cleanString(),
                             null,
                             Constants.CODE_GET_REQUEST);
                     request.execute();
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("result","Nuevo Usuario Final Cargado OK");
-                    setResult(Activity.RESULT_OK,returnIntent);
-                    finish();
+
 
                 } else {
                     PerformNetworkRequest request = new PerformNetworkRequest(
-                            Api.URL_LOGIN_PRES + "'" + etEmail.getText().toString() +"'",
+                            Api.URL_LOGIN_PRES +
+                                    "&emailUser="+new Norm(etEmail.getText().toString()).cleanString()+
+                                    "&pass="+new Norm(etEmail.getText().toString()).cleanString(),
                             null,
                             Constants.CODE_GET_REQUEST);
                     request.execute();
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("result","Prestador login OK");
-                    setResult(Activity.RESULT_OK,returnIntent);
-                    finish();
+
                 }
-
-
             }
         });
     }
@@ -254,68 +252,48 @@ public class UserDataActual extends AppCompatActivity {
             String [] urlmix = url.split("=");
             try {
                 switch (urlmix[0]+"="+urlmix[1]+"="){
-                    case Api.URL_READ_MODELOS_POR_MARCA_VEHI:
-                        JSONObject objectHeroes = new JSONObject(s);
-                        if (!objectHeroes.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectHeroes.getString("message") + ": modelos", Toast.LENGTH_SHORT).show();
-                            //refreshing the herolist after every operation
-                            //so we get an updated list
-                            //we will create this method right now it is commented
-                            //because we haven't created it yet
-
-                            //refreshModelos(objectHeroes.getJSONArray("modelos"));
-                        }
-                        break;
-                    case Api.URL_READ_MARCAS_POR_TIPO_VEHI:
-//                    case Api.URL_READ_MARCAS_POR_TIPO_VEHI+2:
-//                    case Api.URL_READ_MARCAS_POR_TIPO_VEHI+3:
-//                    case Api.URL_READ_MARCAS_POR_TIPO_VEHI+5:
-                        JSONObject objectMarcas = new JSONObject(s);
-                        if (!objectMarcas.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectMarcas.getString("message") + ": marcas", Toast.LENGTH_SHORT).show();
-                            //refreshMarcas(objectMarcas.getJSONArray("marcas"));
-                        }
-                        break;
-                    case Api.URL_WRITE_ACT_USER +"&idUser=":
-                    case Api.URL_WRITE_ADD_USER +"&idUser=":
-                    case Api.URL_WRITE_ADD_PRO +"&idUser=":
-                    case Api.URL_WRITE_ACT_PRO +"&idUser=":
+                    case Api.URL_WRITE_ADD_USER +"&nombreUser=":
                         JSONObject objectUser = new JSONObject(s);
                         if (!objectUser.getBoolean("error")) {
-                            Toast.makeText(getApplicationContext(), objectUser.getString("message") + ": user", Toast.LENGTH_SHORT).show();
-                            if (isUserFinal()){
+//                            Toast.makeText(getApplicationContext(), objectUser.getString("message") + ": user", Toast.LENGTH_SHORT).show();
                                 //refreshUser(objectUser.getJSONArray("users"));
-                            } else {
-                                //refreshPro(objectUser.getJSONArray("users"));
-                            }
 
+                            SharedPreferences.Editor editor = MainActivity.pref.edit();
+                            editor.putString(Constants.KEY_USER_ID, objectUser.getString("userId"));
+                            editor.putString(Constants.KEY_USER_NOMBRE, objectUser.getString("userName") +" " + objectUser.getString("userLastName")); //prestadores.get(position).getNombre() + " " + prestadores.get(position).getApellido()
+                            editor.putString(Constants.KEY_USER_CELULAR, objectUser.getString("userCelular"));
+                            //editor.putString(Constants.KEY_USER_WEB, objectUser.getString("userWeb"));
+                            editor.putString(Constants.KEY_USER_EMAIL, objectUser.getString("userEmail"));
+                            //editor.putString(Constants.KEY_USER_IMAGEN, objectUser.getString("userImagen"));
+                            editor.apply();
+
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("newUserId", objectUser.getString("userId")); //TODO: verificar nombre del parametro que viene de la DB
+                            returnIntent.putExtra("result","Nuevo Usuario Final Cargado OK");
+                            setResult(Activity.RESULT_OK,returnIntent);
+                            finish();
                         }
-                        break;
-                    case Api.URL_READ_USER:
-                    case Api.URL_READ_PRO:
-                        JSONObject objectUserRead = new JSONObject(s);
-                        if (!objectUserRead.getBoolean("error" ) && objectUserRead.getJSONArray("users").length() > 0) {
+                    break;
+                    case Api.URL_LOGIN_PRES:
+                        JSONObject objectLogPres = new JSONObject(s);
+                        if (!objectLogPres.getBoolean("error" ) && objectLogPres.getJSONArray("loginPres").length() > 0) { //TODO: crear Api function y ver nombre de parametro
 
-                            if (MainActivity.pref.getBoolean(Constants.KEY_USER_FINAL, true)){
-                                Toast.makeText(getApplicationContext(), objectUserRead.getString("message") + ": email existente.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                /*writeDataPro(0, 0, 0, 0, "1886",
-                                        etName.getText().toString(), etLastName.getText().toString(),
-                                        etEmail.getText().toString(), etCelular.getText().toString(),
-                                        MainActivity.pref.getString(Constants.KEY_USER_FIREBASE_TOKEN, null),
-                                        etPass.getText().toString());*/
-                            }
-                        } else {
-                            if (MainActivity.pref.getBoolean(Constants.KEY_USER_FINAL, true)){
-                                /*writeCreateUser(0, posTipoVe, posMarcaVe, posModeloVe, etDate.getText().toString(),
-                                        etName.getText().toString(), etLastName.getText().toString(),
-                                        etEmail.getText().toString(), etCelular.getText().toString(), MainActivity.pref.getString(Constants.KEY_USER_FIREBASE_TOKEN, null));*/
-                            } else {
-                                Toast.makeText(getApplicationContext(), objectUserRead.getString("message") + ": Sin autorización.", Toast.LENGTH_LONG).show();
-                            }
+                            SharedPreferences.Editor editor = MainActivity.pref.edit();
+                            editor.putString(Constants.KEY_USER_ID, objectLogPres.getString("userId"));
+                            editor.putString(Constants.KEY_USER_NOMBRE, objectLogPres.getString("userName") +" " + objectLogPres.getString("userLastName")); //prestadores.get(position).getNombre() + " " + prestadores.get(position).getApellido()
+                            editor.putString(Constants.KEY_USER_CELULAR, objectLogPres.getString("userCelular"));
+                            editor.putString(Constants.KEY_USER_WEB, objectLogPres.getString("userWeb"));
+                            editor.putString(Constants.KEY_USER_EMAIL, objectLogPres.getString("userEmail"));
+                            editor.putString(Constants.KEY_USER_IMAGEN, objectLogPres.getString("userImagen"));
+                            editor.apply();
 
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("presId", objectLogPres.getString("presId"));
+                            returnIntent.putExtra("result", "Prestador login OK");
+                            setResult(Activity.RESULT_OK, returnIntent);
+                            finish();
                         }
-
+                    break;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
