@@ -77,7 +77,7 @@ public class UserDataActual extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String[] colors = {"si", "no"};
 
@@ -105,7 +105,7 @@ public class UserDataActual extends AppCompatActivity {
                     editor.putBoolean(Constants.KEY_USER_FINAL, true); // Storing boolean - true/false
                     editor.apply(); // commit changes
                 }
-                btActData.setEnabled(false);
+                btActData.setEnabled(true);
             }
         });
         builder.show();
@@ -113,12 +113,12 @@ public class UserDataActual extends AppCompatActivity {
         btActData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isUserFinal() &&TextUtils.isEmpty(etName.getText())){
+                if (isUserFinal() && TextUtils.isEmpty(etName.getText())){
                     etName.setError("Por favor ingrese un nombre");
                     etName.requestFocus();
                     return;
                 }
-                if (!isUserFinal() &&TextUtils.isEmpty(etLastName.getText())){
+                if (isUserFinal() && TextUtils.isEmpty(etLastName.getText())){
                     etLastName.setError("Por favor ingrese un apellido");
                     etLastName.requestFocus();
                     return;
@@ -142,10 +142,10 @@ public class UserDataActual extends AppCompatActivity {
                     //TODO: cambiar URL para usar Api de Pronto Service correctamente.
                     PerformNetworkRequest request = new PerformNetworkRequest(
                             Api.URL_WRITE_ADD_USER +
-                                    "&nombreUser="+new Norm(etName.getText().toString()).cleanString()+
-                                    "&apellidoUser="+new Norm(etLastName.getText().toString()).cleanString()+
-                                    "&emailUser="+new Norm(etEmail.getText().toString()).cleanString()+
-                                    "&celularUser="+new Norm(etCelular.getText().toString()).cleanString(),
+                                    "&nombre="+new Norm(etName.getText().toString()).cleanString()+
+                                    "&apellido="+new Norm(etLastName.getText().toString()).cleanString()+
+                                    "&email="+new Norm(etEmail.getText().toString()).cleanString()+
+                                    "&celular="+new Norm(etCelular.getText().toString()).cleanString(),
                             null,
                             Constants.CODE_GET_REQUEST);
                     request.execute();
@@ -154,8 +154,7 @@ public class UserDataActual extends AppCompatActivity {
                 } else {
                     PerformNetworkRequest request = new PerformNetworkRequest(
                             Api.URL_LOGIN_PRES +
-                                    "&emailUser="+new Norm(etEmail.getText().toString()).cleanString()+
-                                    "&pass="+new Norm(etEmail.getText().toString()).cleanString(),
+                                    "&emailPres="+new Norm(etEmail.getText().toString()).cleanString(),
                             null,
                             Constants.CODE_GET_REQUEST);
                     request.execute();
@@ -252,46 +251,93 @@ public class UserDataActual extends AppCompatActivity {
             String [] urlmix = url.split("=");
             try {
                 switch (urlmix[0]+"="+urlmix[1]+"="){
-                    case Api.URL_WRITE_ADD_USER +"&nombreUser=":
+                    case Api.URL_WRITE_ADD_USER +"&nombre=":
                         JSONObject objectUser = new JSONObject(s);
-                        if (!objectUser.getBoolean("error")) {
+                        if (!objectUser.getBoolean("error")&& objectUser.getJSONArray("nuevoUser").length() > 0) {
 //                            Toast.makeText(getApplicationContext(), objectUser.getString("message") + ": user", Toast.LENGTH_SHORT).show();
                                 //refreshUser(objectUser.getJSONArray("users"));
 
                             SharedPreferences.Editor editor = MainActivity.pref.edit();
-                            editor.putString(Constants.KEY_USER_ID, objectUser.getString("userId"));
-                            editor.putString(Constants.KEY_USER_NOMBRE, objectUser.getString("userName") +" " + objectUser.getString("userLastName")); //prestadores.get(position).getNombre() + " " + prestadores.get(position).getApellido()
-                            editor.putString(Constants.KEY_USER_CELULAR, objectUser.getString("userCelular"));
-                            //editor.putString(Constants.KEY_USER_WEB, objectUser.getString("userWeb"));
-                            editor.putString(Constants.KEY_USER_EMAIL, objectUser.getString("userEmail"));
-                            //editor.putString(Constants.KEY_USER_IMAGEN, objectUser.getString("userImagen"));
+                            editor.putBoolean(Constants.KEY_USER_EXISTE, true);
+                            editor.putBoolean(Constants.KEY_USER_FINAL, true);
+                            editor.putString(Constants.KEY_USER_ID,
+                                    objectUser.getJSONArray("nuevoUser").
+                                            getJSONObject(0).getString("id"));
+                            editor.putString(Constants.KEY_USER_NOMBRE,
+                                    objectUser.getJSONArray("nuevoUser").
+                                            getJSONObject(0).getString("nombre") +" " +
+                                    objectUser.getJSONArray("nuevoUser").
+                                            getJSONObject(0).getString("apellido"));
+                            editor.putString(Constants.KEY_USER_CELULAR,
+                                    objectUser.getJSONArray("nuevoUser").
+                                            getJSONObject(0).getString("celular"));
+                            //editor.putString(Constants.KEY_USER_WEB,
+                            //      objectUser.getJSONArray("nuevoUser").getJSONObject(0).getString("web"));
+                            editor.putString(Constants.KEY_USER_EMAIL,
+                                    objectUser.getJSONArray("nuevoUser").
+                                            getJSONObject(0).getString("email"));
+                            //editor.putString(Constants.KEY_USER_IMAGEN,
+                            //      objectUser.getJSONArray("nuevoUser").getJSONObject(0).getString("imagen"));
                             editor.apply();
 
                             Intent returnIntent = new Intent();
-                            returnIntent.putExtra("newUserId", objectUser.getString("userId")); //TODO: verificar nombre del parametro que viene de la DB
+                            returnIntent.putExtra("newUserId",
+                                    objectUser.getJSONArray("nuevoUser").
+                                            getJSONObject(0).getString("id")); //TODO: verificar nombre del parametro que viene de la DB
                             returnIntent.putExtra("result","Nuevo Usuario Final Cargado OK");
+                            setResult(Activity.RESULT_OK,returnIntent);
+                            finish();
+                        } else {
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra("result","Nuevo Usuario Final Cargado NOK");
                             setResult(Activity.RESULT_OK,returnIntent);
                             finish();
                         }
                     break;
-                    case Api.URL_LOGIN_PRES:
+                    case Api.URL_LOGIN_PRES +"&emailPres=":
                         JSONObject objectLogPres = new JSONObject(s);
                         if (!objectLogPres.getBoolean("error" ) && objectLogPres.getJSONArray("loginPres").length() > 0) { //TODO: crear Api function y ver nombre de parametro
+                            if (objectLogPres.getJSONArray("loginPres").
+                                    getJSONObject(0).getString("password").
+                                    equals(etPass.getText().toString())){
+                                SharedPreferences.Editor editor = MainActivity.pref.edit();
+                                editor.putBoolean(Constants.KEY_USER_EXISTE, true);
+                                editor.putBoolean(Constants.KEY_USER_FINAL, false);
+                                editor.putString(Constants.KEY_USER_ID,
+                                        objectLogPres.getJSONArray("loginPres").
+                                                getJSONObject(0).getString("id"));
+                                editor.putString(Constants.KEY_USER_NOMBRE,
+                                        objectLogPres.getJSONArray("loginPres").
+                                                getJSONObject(0).getString("nombre") +" " +
+                                                objectLogPres.getJSONArray("loginPres").
+                                                        getJSONObject(0).getString("apellido"));
+                                editor.putString(Constants.KEY_USER_CELULAR,
+                                        objectLogPres.getJSONArray("loginPres").
+                                                getJSONObject(0).getString("celular"));
+                                editor.putString(Constants.KEY_USER_WEB,
+                                        objectLogPres.getJSONArray("loginPres").
+                                                getJSONObject(0).getString("web"));
+                                editor.putString(Constants.KEY_USER_EMAIL,
+                                        objectLogPres.getJSONArray("loginPres").
+                                                getJSONObject(0).getString("email"));
+                                editor.putString(Constants.KEY_USER_IMAGEN,
+                                        objectLogPres.getJSONArray("loginPres").
+                                                getJSONObject(0).getString("imagen"));
+                                editor.apply();
 
-                            SharedPreferences.Editor editor = MainActivity.pref.edit();
-                            editor.putString(Constants.KEY_USER_ID, objectLogPres.getString("userId"));
-                            editor.putString(Constants.KEY_USER_NOMBRE, objectLogPres.getString("userName") +" " + objectLogPres.getString("userLastName")); //prestadores.get(position).getNombre() + " " + prestadores.get(position).getApellido()
-                            editor.putString(Constants.KEY_USER_CELULAR, objectLogPres.getString("userCelular"));
-                            editor.putString(Constants.KEY_USER_WEB, objectLogPres.getString("userWeb"));
-                            editor.putString(Constants.KEY_USER_EMAIL, objectLogPres.getString("userEmail"));
-                            editor.putString(Constants.KEY_USER_IMAGEN, objectLogPres.getString("userImagen"));
-                            editor.apply();
-
-                            Intent returnIntent = new Intent();
-                            returnIntent.putExtra("presId", objectLogPres.getString("presId"));
-                            returnIntent.putExtra("result", "Prestador login OK");
-                            setResult(Activity.RESULT_OK, returnIntent);
-                            finish();
+                                Intent returnIntent = new Intent();
+                                returnIntent.putExtra("presId",
+                                        objectLogPres.getJSONArray("loginPres").
+                                                getJSONObject(0).getString("id"));
+                                returnIntent.putExtra("result", "Prestador login OK");
+                                setResult(Activity.RESULT_OK, returnIntent);
+                                finish();
+                            } else {
+                                Intent returnIntent = new Intent();
+                                returnIntent.putExtra("result", "Prestador login NOK");
+                                setResult(Activity.RESULT_OK, returnIntent);
+                                finish();
+                            }
                         }
                     break;
                 }
@@ -300,4 +346,5 @@ public class UserDataActual extends AppCompatActivity {
             }
         }
     }
+
 }

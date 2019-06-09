@@ -1,11 +1,14 @@
 package com.domo.zoom.serviceya;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +24,12 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -28,6 +37,7 @@ public class PrestadorShow extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 113;
     TextView display;
+    String action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +50,15 @@ public class PrestadorShow extends AppCompatActivity {
         Intent intent = getIntent();
         //get the attached extras from the intent
         //we should use the same key as we used to attach the data.
-        final String prestador_id = intent.getStringExtra("PRESTADOR_ID");
+        action = intent.getStringExtra("ACTION");
+        final String prestador_id = String.valueOf(intent.getIntExtra("PRESTADOR_ID", 1));
         String prestador_nombre = intent.getStringExtra("PRESTADOR_NOMBRE");
         final String prestador_phone = intent.getStringExtra("PRESTADOR_PHONE");
         final String prestador_web = intent.getStringExtra("PRESTADOR_WEB");
         final String prestador_email = intent.getStringExtra("PRESTADOR_EMAIL");
         final String prestador_imagen = intent.getStringExtra("PRESTADOR_IMAGEN");
         final String prestador_servicios = intent.getStringExtra("PRESTADOR_SERVICIO");
+
 
         ActionBar ab = getSupportActionBar();
         if (ab != null){
@@ -81,12 +93,19 @@ public class PrestadorShow extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Estamos procesando la llamada...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 if (ContextCompat.checkSelfPermission( getApplicationContext(),
                         Manifest.permission.CALL_PHONE)
                         == PackageManager.PERMISSION_GRANTED) {
                     //TODO: sendInteration(prestador_id, cliente_id);
+                    PerformNetworkRequest request = new PerformNetworkRequest(
+                            Api.URL_WRITE_REG_CALL +
+                            "&userId=" + MainActivity.pref.getString(Constants.KEY_USER_ID, "1") +
+                            "&presId=" + prestador_id,
+                            null,
+                            Constants.CODE_GET_REQUEST);
+                    request.execute();
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse("tel:"+ prestador_phone));//change the number
                     startActivity(callIntent);
@@ -153,5 +172,104 @@ public class PrestadorShow extends AppCompatActivity {
             // permissions this app might request
         }
     }
+    @Override
+    public void onBackPressed() {
+        if (isPrestador()){
+            Toast.makeText(PrestadorShow.this,
+                    "Gracias por elegirnos...", Toast.LENGTH_LONG)
+                    .show();
+            finish();
+            moveTaskToBack(true);
+            System.exit(0);
+        } else {
+            super.onBackPressed();
+        }
 
+    }
+
+    private boolean isPrestador(){
+        if (action != null) {
+            if (action.equals("FORPRESTADOR")) return true;
+            else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
+    //inner class to perform network request extending an AsyncTask
+    private class PerformNetworkRequest extends AsyncTask<Void, Void, String> {
+
+        //the url where we need to send the request
+        String url;
+
+        //the parameters
+        HashMap<String, String> params;
+
+        //the request code to define whether it is a GET or POST
+        int requestCode;
+
+        //constructor to initialize values
+        PerformNetworkRequest(String url, HashMap<String, String> params, int requestCode) {
+            this.url = url;
+            this.params = params;
+            this.requestCode = requestCode;
+        }
+
+        //when the task started displaying a progressbar
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            progressBar.setVisibility(View.VISIBLE);
+        }
+
+
+
+
+        //the network operation will be performed in background
+        @Override
+        protected String doInBackground(Void... voids) {
+            RequestHandler requestHandler = new RequestHandler();
+
+            if (requestCode == Constants.CODE_POST_REQUEST)
+                return requestHandler.sendPostRequest(url, params);
+
+
+            if (requestCode == Constants.CODE_GET_REQUEST)
+                return requestHandler.sendGetRequest(url);
+
+            return null;
+        }
+
+        //this method will give the response from the request
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+//            progressBar.setVisibility(GONE);
+            String [] urlmix = url.split("=");
+            try {
+                switch (urlmix[0]+"="+urlmix[1]+"="){
+                    case Api.URL_WRITE_REG_CALL +"&userId=":
+                        JSONObject objectRegistro = new JSONObject(s);
+                        if (!objectRegistro.getBoolean("error")&& objectRegistro.getJSONArray("registros").length() > 0) {
+                            Toast.makeText(getApplicationContext(), objectRegistro.getString("message") + ": registros", Toast.LENGTH_SHORT).show();
+//                            refreshUser(objectUser.getJSONArray("users"));
+                        }
+
+                    break;
+                    case Api.URL_LOGIN_PRES +"&emailPres=":
+                        JSONObject objectLogPres = new JSONObject(s);
+                        if (!objectLogPres.getBoolean("error" ) && objectLogPres.getJSONArray("loginPres").length() > 0) { //TODO: crear Api function y ver nombre de parametro
+
+
+                        }
+                    break;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
