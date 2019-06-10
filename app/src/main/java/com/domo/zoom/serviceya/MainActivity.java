@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.IntentCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -719,14 +720,36 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
+            shareTextUrl();
 
         } else if (id == R.id.nav_send) {
-
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+            emailIntent.setData(Uri.parse("mailto:hola@prontoservice.com.ar?&subject="+ Uri.encode("Les envío mis comentarios o solicitud sobre la app")));
+            try {
+                startActivity(emailIntent);
+            } catch (ActivityNotFoundException e) {
+                //TODO: Handle case where no email app is available
+                finish();
+                moveTaskToBack(true);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void shareTextUrl() {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED); //FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET
+
+        // Add data to the intent, the receiving app will decide
+        // what to do with it.
+        share.putExtra(Intent.EXTRA_SUBJECT, "Te invito a instalar Pronto Service!");
+        share.putExtra(Intent.EXTRA_TEXT, "http://www.prontoservice.com.ar");
+
+        startActivity(Intent.createChooser(share, "Te invito a instalar Pronto Service!"));
     }
 
     @Override
