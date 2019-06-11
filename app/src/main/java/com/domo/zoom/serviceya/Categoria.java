@@ -1,8 +1,10 @@
 package com.domo.zoom.serviceya;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -76,8 +78,8 @@ public class Categoria extends AppCompatActivity {
             @Override
             public void onClick(View view, final int position) {
                 //Values are passing to activity & to fragment as well
-                Toast.makeText(Categoria.this, "Single Click on position :"+position,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Categoria.this, "Single Click on position :"+position,
+//                        Toast.LENGTH_SHORT).show();
                 ImageView picture=(ImageView)view.findViewById(R.id.imageView2);
                 picture.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -100,8 +102,8 @@ public class Categoria extends AppCompatActivity {
 
             @Override
             public void onLongClick(View view, int position) {
-                Toast.makeText(Categoria.this, "Long press on position :"+position,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(Categoria.this, "Long press on position :"+position,
+//                        Toast.LENGTH_LONG).show();
             }
         }));
 
@@ -112,10 +114,42 @@ public class Categoria extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Toast.makeText(Categoria.this, "DEBE HACER CLICK en Enviar ->...", Snackbar.LENGTH_LONG)
+                        .show();
+                String [] to = {"hola@prontoservice.com.ar"};
+                String [] cco = {"hola@prontoservice.com.ar", "hola@prontoservice.com.ar", "hola@prontoservice.com.ar", "hola@prontoservice.com.ar", "hola@prontoservice.com.ar", "hola@prontoservice.com.ar", "hola@prontoservice.com.ar"};
+                int i = 0;
+                for ( Prestador prestador : prestadores ) {
+                    cco[i] = prestador.getEmail();
+                    i++;
+                    if (i > cco.length) break;
+                }
+                String subject = "Solicitud de Asesoramiento Abierta";
+                String menssage = "Favor contactar por email o por teléfono, " +
+                        MainActivity.pref.getString(Constants.KEY_USER_CELULAR, "") +
+                        ".\n" +
+                        "Saludos.\n\n" +
+                        MainActivity.pref.getString(Constants.KEY_USER_NOMBRE, "");
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, to);
+                emailIntent.putExtra(Intent.EXTRA_BCC, cco);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+                emailIntent.putExtra(Intent.EXTRA_TEXT, menssage);
+
+                //startActivity(Intent.createChooser(emailIntent, "Email "));
+
+                //emailIntent.setData(Uri.parse("mailto:hola@prontoservice.com.ar?&bcc="+ Uri.encode(cco)));
+                try {
+                    startActivity(emailIntent);
+                } catch (ActivityNotFoundException e) {
+                    //TODO: Handle case where no email app is available
+                    finish();
+                    moveTaskToBack(true);
+                }
             }
         });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

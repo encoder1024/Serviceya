@@ -703,7 +703,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
             Toast.makeText(MainActivity.this, "Escribe en el renglón superior...",
                     Toast.LENGTH_LONG).show();
@@ -720,6 +719,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
+
             shareTextUrl();
 
         } else if (id == R.id.nav_send) {
@@ -742,7 +742,7 @@ public class MainActivity extends AppCompatActivity
     private void shareTextUrl() {
         Intent share = new Intent(android.content.Intent.ACTION_SEND);
         share.setType("text/plain");
-        share.addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED); //FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET
+        share.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT); //FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET
 
         // Add data to the intent, the receiving app will decide
         // what to do with it.
