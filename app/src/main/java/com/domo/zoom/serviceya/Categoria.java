@@ -42,6 +42,7 @@ public class Categoria extends AppCompatActivity {
     private Spinner spCategoria;
     private ArrayList<String> categorias = new ArrayList<>();
     private ArrayList<Prestador> prestadores = new ArrayList<>();
+    private String categoriaSelected, grupo_name;
 
 
     @Override
@@ -57,7 +58,7 @@ public class Categoria extends AppCompatActivity {
         Intent intent = getIntent();
         //get the attached extras from the intent
         //we should use the same key as we used to attach the data.
-        String grupo_name = intent.getStringExtra("GRUPO_NAME");
+        grupo_name = intent.getStringExtra("GRUPO_NAME");
 
         ActionBar ab = getSupportActionBar();
         if (ab != null){
@@ -96,6 +97,9 @@ public class Categoria extends AppCompatActivity {
                 intent.putExtra("PRESTADOR_WEB", prestadores.get(position).getWeb());
                 intent.putExtra("PRESTADOR_EMAIL", prestadores.get(position).getEmail());
                 intent.putExtra("PRESTADOR_IMAGEN", prestadores.get(position).getImagen());
+                intent.putExtra("PRESTADOR_GRUPO", grupo_name);
+                intent.putExtra("PRESTADOR_CATEGORIA", categoriaSelected);
+                intent.putExtra("PRESTADOR_FROM", "Categoria");
                 //starting the activity
                 startActivity(intent);
             }
@@ -326,7 +330,8 @@ public class Categoria extends AppCompatActivity {
 
                 ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
                 //((TextView) adapterView.getChildAt(0)).setTextSize(5);
-                actualizarPrestadores(spCategoria.getItemAtPosition(i).toString());
+                categoriaSelected = spCategoria.getItemAtPosition(i).toString();
+                actualizarPrestadores(categoriaSelected);
             }
 
             @Override

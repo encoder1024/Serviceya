@@ -127,6 +127,9 @@ public class Buscador extends AppCompatActivity {
                 intent.putExtra("PRESTADOR_WEB", prestadores.get(position).getWeb());
                 intent.putExtra("PRESTADOR_EMAIL", prestadores.get(position).getEmail());
                 intent.putExtra("PRESTADOR_IMAGEN", prestadores.get(position).getImagen());
+                intent.putExtra("PRESTADOR_GRUPO", String.valueOf(gruposId.get(positionGrupo)));
+                intent.putExtra("PRESTADOR_CATEGORIA", String.valueOf(categoriasId.get(positionCategoria)));
+                intent.putExtra("PRESTADOR_FROM", "Buscador");
                 //starting the activity
                 startActivity(intent);
             }
