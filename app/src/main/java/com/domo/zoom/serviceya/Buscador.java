@@ -121,12 +121,15 @@ public class Buscador extends AppCompatActivity {
                 });
                 Intent intent = new Intent(getBaseContext(), PrestadorShow.class);
                 //attach the key value pair using putExtra to this intent
-                intent.putExtra("PRESTADOR_NOMBRE",
-                        prestadores.get(position).getNombre()
-                                + " " +
-                                prestadores.get(position).getApellido());
-                String prestador_phone = prestadores.get(position).getCelular();
-                intent.putExtra("PRESTADOR_PHONE", prestador_phone);
+                intent.putExtra("PRESTADOR_ID", prestadores.get(position).getId());
+                intent.putExtra("PRESTADOR_NOMBRE",prestadores.get(position).getNombre() + " " + prestadores.get(position).getApellido());
+                intent.putExtra("PRESTADOR_PHONE", prestadores.get(position).getCelular());
+                intent.putExtra("PRESTADOR_WEB", prestadores.get(position).getWeb());
+                intent.putExtra("PRESTADOR_EMAIL", prestadores.get(position).getEmail());
+                intent.putExtra("PRESTADOR_IMAGEN", prestadores.get(position).getImagen());
+                intent.putExtra("PRESTADOR_GRUPO", String.valueOf(gruposId.get(positionGrupo)));
+                intent.putExtra("PRESTADOR_CATEGORIA", String.valueOf(categoriasId.get(positionCategoria)));
+                intent.putExtra("PRESTADOR_FROM", "Buscador");
                 //starting the activity
                 startActivity(intent);
             }
@@ -696,6 +699,13 @@ public class Buscador extends AppCompatActivity {
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(Buscador.this,
+                "Por favor usar la flecha de regreso, arriba a la izquierda...", Toast.LENGTH_LONG)
+                .show();
     }
 }
 
