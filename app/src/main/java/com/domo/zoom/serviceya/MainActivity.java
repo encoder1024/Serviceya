@@ -43,6 +43,7 @@ import android.widget.Toast;
 //Comento para alfa-release1.4-ini
 //Comento para alfa-release1.4-out
 //Comento para alfa-release1.4
+//Comento para alfa-release1.5-ini
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
