@@ -25,6 +25,8 @@ public class Api {
     static final String URL_READ_PROVINCIAS = ROOT_URL + "getProvincias&queBusco=";
     static final String URL_READ_LOCALIDADES = ROOT_URL + "getLocalidades&provincia=";
     static final String URL_READ_GRUPOS = ROOT_URL + "getGrupos&queBusco=";
+    static final String URL_READ_SERVICE_CAT = ROOT_URL + "getServicioCat";
+    static final String URL_READ_SERVICE_BUS = ROOT_URL + "getServicioBus";
 
     public static final String URL_UPDATE_USER_TOKEN_FB = ROOT_URL + "settokenfb&idUser=";
     public static final String URL_WRITE_ADD_PRO = ROOT_URL + "writeCreatePro";

@@ -38,6 +38,8 @@ public class PrestadorShow extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 113;
     TextView display;
     String action;
+    String sentence;
+    SpannableString s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,10 @@ public class PrestadorShow extends AppCompatActivity {
         final String prestador_email = intent.getStringExtra("PRESTADOR_EMAIL");
         final String prestador_imagen = intent.getStringExtra("PRESTADOR_IMAGEN");
         final String prestador_servicios = intent.getStringExtra("PRESTADOR_SERVICIO");
+        final String prestador_grupo = intent.getStringExtra("PRESTADOR_GRUPO");
+        final String prestador_categoria = intent.getStringExtra("PRESTADOR_CATEGORIA");
+        final String prestador_action = intent.getStringExtra("PRESTADOR_FROM");
+
 
 
         ActionBar ab = getSupportActionBar();
@@ -65,25 +71,45 @@ public class PrestadorShow extends AppCompatActivity {
             ab.setTitle(prestador_nombre);
         }
 
+        if (prestador_action != null) {
+            if (prestador_action.equals("Categoria")){
+                PerformNetworkRequest request = new PerformNetworkRequest(
+                        Api.URL_READ_SERVICE_CAT +
+                                "&groupname=" + Uri.encode(prestador_grupo)+
+                                "&categname=" + Uri.encode(prestador_categoria) +
+                                "&presId=" + prestador_id,
+                        null,
+                        Constants.CODE_GET_REQUEST);
+                request.execute();
+            } else {
+                PerformNetworkRequest request = new PerformNetworkRequest(
+                        Api.URL_READ_SERVICE_BUS +
+                                "&presGroupId=" + prestador_grupo +
+                                "&presCategId=" + prestador_categoria +
+                                "&presId=" + prestador_id,
+                        null,
+                        Constants.CODE_GET_REQUEST);
+                request.execute();
+            }
+        }
+
         display = findViewById(R.id.tvShowPres);
 
-        String sentence = "Teléfono: " + prestador_phone + "\n\n";
+        sentence = "Teléfono: " + prestador_phone + "\n\n";
         sentence = sentence + "Web: \n" + prestador_web + "\n\n";
         sentence = sentence + "Email: \n" + prestador_email + "\n\n";
-        sentence = sentence + "Servicios: \n" + prestador_servicios + "\n\n";
-        sentence = sentence + getResources().getString(R.string.large_text);
+        //sentence = sentence + "Servicios: \n" + prestador_servicios + "\n\n";
+        //sentence = sentence + getResources().getString(R.string.large_text);
 
-        SpannableString s = new SpannableString(sentence);
+        s = new SpannableString(sentence);
 
+        s.setSpan(new RelativeSizeSpan(1.3f), sentence.indexOf("Teléfono"), sentence.length(), 0);
         s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), 0, 9, 0);
         s.setSpan(new StyleSpan(Typeface.BOLD), 0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Web:"), sentence.indexOf("Web:")+4, 0);
         s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Web:"), sentence.indexOf("Web:")+4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Email:"), sentence.indexOf("Email:")+5, 0);
         s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Email:"), sentence.indexOf("Email:")+5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Servicios:"), sentence.indexOf("Servicios:")+10, 0);
-        s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Servicios:"), sentence.indexOf("Servicios:")+10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        s.setSpan(new RelativeSizeSpan(1.3f), sentence.indexOf("Teléfono"), sentence.length(), 0);
 
         display.setText(s);
 
@@ -245,25 +271,57 @@ public class PrestadorShow extends AppCompatActivity {
 
         //this method will give the response from the request
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(String st) {
+            super.onPostExecute(st);
 //            progressBar.setVisibility(GONE);
             String [] urlmix = url.split("=");
             try {
                 switch (urlmix[0]+"="+urlmix[1]+"="){
                     case Api.URL_WRITE_REG_CALL +"&userId=":
-                        JSONObject objectRegistro = new JSONObject(s);
+                        JSONObject objectRegistro = new JSONObject(st);
                         if (!objectRegistro.getBoolean("error")&& objectRegistro.getJSONArray("registros").length() > 0) {
                             Toast.makeText(getApplicationContext(), objectRegistro.getString("message") + ": registros", Toast.LENGTH_SHORT).show();
 //                            refreshUser(objectUser.getJSONArray("users"));
                         }
 
                     break;
-                    case Api.URL_LOGIN_PRES +"&emailPres=":
-                        JSONObject objectLogPres = new JSONObject(s);
-                        if (!objectLogPres.getBoolean("error" ) && objectLogPres.getJSONArray("loginPres").length() > 0) { //TODO: crear Api function y ver nombre de parametro
+                    case Api.URL_READ_SERVICE_CAT +"&groupname=":
+                        JSONObject objectServCat = new JSONObject(st);
+                        if (!objectServCat.getBoolean("error" ) && objectServCat.getJSONArray("servicios").length() > 0) { //TODO: crear Api function y ver nombre de parametro
+                            sentence = sentence + "Servicios: \n" + objectServCat.getJSONArray("servicios").getJSONObject(0).getString("detalle") + "\n\n";
 
+                            s = new SpannableString(sentence);
 
+                            s.setSpan(new RelativeSizeSpan(1.3f), sentence.indexOf("Teléfono"), sentence.length(), 0);
+                            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), 0, 9, 0);
+                            s.setSpan(new StyleSpan(Typeface.BOLD), 0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Web:"), sentence.indexOf("Web:")+4, 0);
+                            s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Web:"), sentence.indexOf("Web:")+4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Email:"), sentence.indexOf("Email:")+5, 0);
+                            s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Email:"), sentence.indexOf("Email:")+5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Servicios:"), sentence.indexOf("Servicios:")+10, 0);
+                            s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Servicios:"), sentence.indexOf("Servicios:")+10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            display.setText(s);
+                        }
+                    break;
+                    case Api.URL_READ_SERVICE_BUS +"&presGroupId=":
+                        JSONObject objectServBus = new JSONObject(st);
+                        if (!objectServBus.getBoolean("error" ) && objectServBus.getJSONArray("servicios").length() > 0) { //TODO: crear Api function y ver nombre de parametro
+                            sentence = sentence + "Servicios: \n" + objectServBus.getJSONArray("servicios").getJSONObject(0).getString("detalle") + "\n\n";
+                            s = new SpannableString(sentence);
+
+                            s.setSpan(new RelativeSizeSpan(1.3f), sentence.indexOf("Teléfono"), sentence.length(), 0);
+                            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), 0, 9, 0);
+                            s.setSpan(new StyleSpan(Typeface.BOLD), 0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Web:"), sentence.indexOf("Web:")+4, 0);
+                            s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Web:"), sentence.indexOf("Web:")+4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Email:"), sentence.indexOf("Email:")+5, 0);
+                            s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Email:"), sentence.indexOf("Email:")+5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                            s.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorPrimaryDark, getTheme())), sentence.indexOf("Servicios:"), sentence.indexOf("Servicios:")+10, 0);
+                            s.setSpan(new StyleSpan(Typeface.BOLD), sentence.indexOf("Servicios:"), sentence.indexOf("Servicios:")+10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            display.setText(s);
                         }
                     break;
                 }
