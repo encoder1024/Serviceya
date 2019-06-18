@@ -2,13 +2,20 @@ package com.domo.zoom.serviceya;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.IntentCompat;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -34,6 +41,7 @@ import android.widget.Toast;
 //Comento para alfa-release1.2-out
 //Comento para alfa-release1.3-in
 //Comento para alfa-release1.4-ini
+//Comento para alfa-release1.4-out
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,10 +55,19 @@ public class MainActivity extends AppCompatActivity
     private Toolbar myToolbar;
     private boolean fab7Touch = false;
 
+    static public SharedPreferences pref;
+    public static boolean isAppRunning;
+    private static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        isAppRunning = true;
+        pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
+        context = GlobalApplication.getAppContext();
+
         myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
@@ -62,6 +79,12 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
+                if (!pref.getBoolean(Constants.KEY_USER_EXISTE, false)){
+                    Intent myIntent = new Intent(MainActivity.this, UserDataActual.class);
+                    myIntent.putExtra("key", "registrarUser"); //Optional parameters
+                    MainActivity.this.startActivityForResult(myIntent, 113);
+                    toggleFabMenu();
+                }
                 toggleFabMenu();
             }
         });
@@ -224,10 +247,78 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        if (!pref.getBoolean(Constants.KEY_USER_EXISTE, false)) {
+            Intent myIntent = new Intent(MainActivity.this, UserDataActual.class);
+            myIntent.putExtra("key", "registrarUser"); //Optional parameters
+            MainActivity.this.startActivityForResult(myIntent, 113);
+        } else if(!isUserFinal()){
 
+            Intent intent = new Intent(MainActivity.this, PrestadorShow.class);
+            intent.putExtra("ACTION", "FORPRESTADOR");
+            intent.putExtra("PRESTADOR_ID", pref.getString(Constants.KEY_USER_ID, "1"));
+            intent.putExtra("PRESTADOR_NOMBRE", pref.getString(Constants.KEY_USER_NOMBRE, "Nombre") + " " + pref.getString(Constants.KEY_USER_APELLIDO, "Apellido")); //prestadores.get(position).getNombre() + " " + prestadores.get(position).getApellido()
+            intent.putExtra("PRESTADOR_PHONE", pref.getString(Constants.KEY_USER_CELULAR, "Sin Datos"));
+            intent.putExtra("PRESTADOR_WEB", pref.getString(Constants.KEY_USER_WEB, "Sin Datos"));
+            intent.putExtra("PRESTADOR_EMAIL", pref.getString(Constants.KEY_USER_EMAIL, "Sin Datos"));
+            intent.putExtra("PRESTADOR_IMAGEN", pref.getString(Constants.KEY_USER_IMAGEN, "Sin Datos"));
+            MainActivity.this.startActivity(intent);
+        }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode == 113) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("result");
+                if(result.equals("Nuevo Usuario Final Cargado OK")){
+                    String userId = data.getStringExtra("newUserId");
+                    Toast.makeText(MainActivity.this, "Usuario registrado con éxito!!!",
+                            Toast.LENGTH_LONG).show();
+                } else if (result.equals("Nuevo Usuario Final Cargado NOK")){
+                    Toast.makeText(MainActivity.this, "Error: El email ya existe en la base de datos. Favor envianos un mensaje!!!",
+                            Toast.LENGTH_LONG).show();
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                    emailIntent.setData(Uri.parse("mailto:hola@prontoservice.com.ar?&subject="+ Uri.encode("Favor resetear mi email")));
+                    try {
+                        startActivity(emailIntent);
+                    } catch (ActivityNotFoundException e) {
+                        //TODO: Handle case where no email app is available
+                        finish();
+                        moveTaskToBack(true);
+                    }
+
+                } else if(result.equals("Prestador login NOK")) {
+                    Toast.makeText(MainActivity.this, "email o clave incorrectos...",
+                            Toast.LENGTH_LONG).show();
+                    Intent myIntent = new Intent(MainActivity.this, UserDataActual.class);
+                    myIntent.putExtra("key", "registrarUser"); //Optional parameters
+                    MainActivity.this.startActivityForResult(myIntent, 113);
+                } else if (result.equals("Prestador login OK")) {
+                    Toast.makeText(MainActivity.this, "Acceso OK...",
+                            Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, PrestadorShow.class);
+                    intent.putExtra("ACTION", "FORPRESTADOR");
+                    intent.putExtra("PRESTADOR_ID", pref.getString(Constants.KEY_USER_ID, "1"));
+                    intent.putExtra("PRESTADOR_NOMBRE", pref.getString(Constants.KEY_USER_NOMBRE, "Nombre"));
+                    intent.putExtra("PRESTADOR_PHONE", pref.getString(Constants.KEY_USER_CELULAR, "Sin Datos"));
+                    intent.putExtra("PRESTADOR_WEB", pref.getString(Constants.KEY_USER_WEB, "Sin Datos"));
+                    intent.putExtra("PRESTADOR_EMAIL", pref.getString(Constants.KEY_USER_EMAIL, "Sin Datos"));
+                    intent.putExtra("PRESTADOR_IMAGEN", pref.getString(Constants.KEY_USER_IMAGEN, "Sin Datos"));
+                    MainActivity.this.startActivity(intent);
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+                Toast.makeText(MainActivity.this, "Ocurrió un problema, por favor intente más tarde..",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }//onActivityResult
+
+    private boolean isUserFinal(){
+        return pref.getBoolean(Constants.KEY_USER_FINAL, true);
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void toggleToolbar() {
@@ -613,7 +704,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
             Toast.makeText(MainActivity.this, "Escribe en el renglón superior...",
                     Toast.LENGTH_LONG).show();
@@ -631,12 +721,77 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+            shareTextUrl();
 
+        } else if (id == R.id.nav_send) {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+            emailIntent.setData(Uri.parse("mailto:hola@prontoservice.com.ar?&subject="+ Uri.encode("Les envío mis comentarios o solicitud sobre la app")));
+            try {
+                startActivity(emailIntent);
+            } catch (ActivityNotFoundException e) {
+                //TODO: Handle case where no email app is available
+                finish();
+                moveTaskToBack(true);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void shareTextUrl() {
+        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT); //FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET
+
+        // Add data to the intent, the receiving app will decide
+        // what to do with it.
+        share.putExtra(Intent.EXTRA_SUBJECT, "Te invito a instalar Pronto Service!");
+        share.putExtra(Intent.EXTRA_TEXT, "http://www.prontoservice.com.ar");
+
+        startActivity(Intent.createChooser(share, "Te invito a instalar Pronto Service!"));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (fabMenuOpen && !TextUtils.isEmpty(acQueNec.toString())) {
+            acQueNec.setText("");
+            fabMenuOpen = !fabMenuOpen;
+        }
+
+//        if (!pref.getBoolean(Constants.KEY_USER_EXISTE, false)){
+//            Intent myIntent = new Intent(MainActivity.this, UserDataActual.class);
+//            myIntent.putExtra("key", "registrarUser"); //Optional parameters
+//            MainActivity.this.startActivityForResult(myIntent, 113);
+//        }
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (fabMenuOpen && !TextUtils.isEmpty(acQueNec.toString())) {
+            acQueNec.setText("");
+            fabMenuOpen = !fabMenuOpen;
+        }
+
+//        if (!pref.getBoolean(Constants.KEY_USER_EXISTE, false)){
+//            Intent myIntent = new Intent(MainActivity.this, UserDataActual.class);
+//            myIntent.putExtra("key", "registrarUser"); //Optional parameters
+//            MainActivity.this.startActivityForResult(myIntent, 113);
+//        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isAppRunning = false;
+    }
+
+
 }
