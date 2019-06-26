@@ -43,7 +43,9 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_show_prestador" />
+    <include
+        android:id="@+id/include3"
+        layout="@layout/content_show_prestador" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -53,5 +55,16 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@android:drawable/ic_menu_call" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabCalifica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        app:layout_anchorGravity="end|top"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
 </android.support.design.widget.CoordinatorLayout>
