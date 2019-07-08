@@ -2,6 +2,7 @@ package com.domo.zoom.serviceya;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -22,7 +23,10 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +44,8 @@ public class PrestadorShow extends AppCompatActivity {
     String action;
     String sentence;
     SpannableString s;
+    private String califica = "8";
+    final String prestador_id ="1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,11 +130,10 @@ public class PrestadorShow extends AppCompatActivity {
                 if (ContextCompat.checkSelfPermission( getApplicationContext(),
                         Manifest.permission.CALL_PHONE)
                         == PackageManager.PERMISSION_GRANTED) {
-                    //TODO: sendInteration(prestador_id, cliente_id);
                     PerformNetworkRequest request = new PerformNetworkRequest(
                             Api.URL_WRITE_REG_CALL +
-                            "&userId=" + MainActivity.pref.getString(Constants.KEY_USER_ID, "1") +
-                            "&presId=" + prestador_id,
+                                    "&userId=" + MainActivity.pref.getString(Constants.KEY_USER_ID, "1") +
+                                    "&presId=" + prestador_id,
                             null,
                             Constants.CODE_GET_REQUEST);
                     request.execute();
@@ -142,6 +147,93 @@ public class PrestadorShow extends AppCompatActivity {
 
             }
         });
+
+        FloatingActionButton fabCali = findViewById(R.id.fabCalifica);
+        fabCali.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Estamos procesando la llamada...", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                if (ContextCompat.checkSelfPermission( getApplicationContext(),
+                        Manifest.permission.CALL_PHONE)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+                    AgeDialog();
+
+//                    PerformNetworkRequest request = new PerformNetworkRequest(
+//                            Api.URL_WRITE_REG_CALIF +
+//                                    "&userId=" + MainActivity.pref.getString(Constants.KEY_USER_ID, "1") +
+//                                    "&presId=" + prestador_id + "&califica=" + califica,
+//                            null,
+//                            Constants.CODE_GET_REQUEST);
+//                    request.execute();
+                } else {
+                    tengoPermisoLlamadas();
+                }
+
+
+            }
+        });
+    }
+
+    public void AgeDialog(){
+
+        final android.support.v7.app.AlertDialog.Builder alert = new android.support.v7.app.AlertDialog.Builder(this);
+        alert.setCancelable(false);
+
+        LinearLayout l1 = new LinearLayout(getApplicationContext());
+
+        l1.setOrientation(LinearLayout.HORIZONTAL);
+        final NumberPicker number =new NumberPicker((this));
+        number.setMaxValue(10);
+        number.setMinValue(1);
+        number.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        number.setWrapSelectorWheel(true);
+//        final NumberPicker ageUnitss = new NumberPicker(this);
+//        final String arrays[] = new String[3];
+//        arrays[0]="Years";
+//        arrays[1]="Months";
+//        arrays[2]="Days";
+
+//        ageUnitss.setMaxValue(2);
+//        ageUnitss.setMinValue(0);
+//        ageUnitss.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+//        ageUnitss.setDisplayedValues(arrays);
+//        ageUnitss.setWrapSelectorWheel(true);
+
+
+        l1.addView(number);
+//        l1.addView(ageUnitss);
+
+        l1.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
+
+        alert.setView(l1);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //ageUnits = arrays[(ageUnitss.getValue())];
+                califica = String.valueOf(number.getValue());
+                //fragment1.setAgeText(age +" "+ageUnits);
+
+                PerformNetworkRequest request = new PerformNetworkRequest(
+                        Api.URL_WRITE_REG_CALIF +
+                                "&userId=" + MainActivity.pref.getString(Constants.KEY_USER_ID, "1") +
+                                "&presId=" + prestador_id + "&califica=" + califica,
+                        null,
+                        Constants.CODE_GET_REQUEST);
+                request.execute();
+                Toast.makeText(getApplicationContext(), "Ud. ha calificado al prestador con un " + califica + ".", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
     }
 
     private void tengoPermisoLlamadas() {
