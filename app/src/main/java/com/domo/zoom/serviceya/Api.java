@@ -16,6 +16,7 @@ public class Api {
     public static final String URL_WRITE_ADD_USER = ROOT_URL + "createUser";
     public static final String URL_WRITE_REG_CALL = ROOT_URL + "regCall";
     public static final String URL_LOGIN_PRES = ROOT_URL + "getPrestadorEmail";
+    public static final String URL_WRITE_REG_CALIF = ROOT_URL + "regCalifica";
 
     static final String URL_READ_SITIOS_FULL = ROOT_URL + "getsitiofull&idSitio=";
     static final String URL_READ_CATEGORIAS = ROOT_URL + "getCategorias&grupoName=";
